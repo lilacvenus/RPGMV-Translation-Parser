@@ -51,7 +51,7 @@ fs.readdir(folderPath, (err, files) => {
         // Write translations to file
         fs.writeFile('Translations.json', JSON.stringify(translations, null, 2), (err) => {
             if (err) throw err;
-            console.log('The file has been saved!');
+            console.log('Successfully wrote to Translations.json');
         });
     });
 
