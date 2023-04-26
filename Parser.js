@@ -1,7 +1,8 @@
 const fs = require('fs');
 
-const languages = ["Français"]; // Adding more language auto-generates the fields.
+const languages = ["Français", "Spanish"]; // Adding more language auto-generates the fields.
 const menuOptions = ["Generate Translations", "Untranslated Count"];
+let translations = { msg: {}, cmd: {}, terms: {}, custom: {} }; // Empty translations template
 
 // --------------------- //
 //      DRIVER CODE      //
@@ -36,8 +37,6 @@ function generateTranslations() {
             console.error(err);
             return;
         }
-
-        let translations = { msg: {}, cmd: {}, terms: {}, custom: {} }; // Empty translations template
 
         const regex = /^Map\d{3}\.json$/; //filter files that match the format "Map000.json"
         const matchingFiles = files.filter(file => regex.test(file)); // array of files that match the format "Map000.json"
@@ -113,10 +112,7 @@ function generateTranslations() {
             const termsChildren = translations.terms ? Object.keys(translations.terms).length : 0;
             const customChildren = translations.custom ? Object.keys(translations.custom).length : 0;
 
-            // Hardcoded until I add a language selection menu
-            selectedLanguage = "notfrench"
-
-            console.log(`[GENERATED TRANSLATIONS FOR ${selectedLanguage.toUpperCase()}]\n# of messages:   ${msgChildren.toString().padStart(8)} \n# of commands:   ${cmdChildren.toString().padStart(8)} \n# of terms:      ${termsChildren.toString().padStart(8)} \n# of custom:     ${customChildren.toString().padStart(8)}`);
+            console.log(`[GENERATED TRANSLATIONS]\n# of messages:   ${msgChildren.toString().padStart(8)} \n# of commands:   ${cmdChildren.toString().padStart(8)} \n# of terms:      ${termsChildren.toString().padStart(8)} \n# of custom:     ${customChildren.toString().padStart(8)}`);
 
 
             // Write translations to file
@@ -158,5 +154,27 @@ function untranslatedCount() {
             const customUntranslated = translations.custom ? Object.entries(translations.custom).filter(([key, value]) => key === value[language]).length : 0;
             console.log(`${language.padEnd(9)}: ${String(msgUntranslated).padEnd(6)} ${String(cmdUntranslated).padEnd(6)} ${String(termsUntranslated).padEnd(6)} | ${String(customUntranslated).padEnd(6)}`);
         });
+
+        const msgUntranslated = translations.msg ? Object.entries(translations.msg).filter(([key, value]) => key === value[language]) : 0;
+        const cmdUntranslated = translations.cmd ? Object.entries(translations.cmd).filter(([key, value]) => key === value[language]) : 0;
+        const termsUntranslated = translations.terms ? Object.entries(translations.terms).filter(([key, value]) => key === value[language]) : 0;
+        const customUntranslated = translations.custom ? Object.entries(translations.custom).filter(([key, value]) => key === value[language]) : 0;
+
+        fs.writeFile('untranslated.json', data, (err) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            console.log('Data has been written to untranslated.txt successfully.');
+          });
+
     });
+}
+
+function overTranslated() {
+    console.log("[OVER TRANSLATED STRINGS]");
+}
+
+function underTranslated() {
+    console.log("[UNDER TRANSLATED STRINGS]");
 }

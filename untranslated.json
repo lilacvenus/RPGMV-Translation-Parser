@@ -1,0 +1,42 @@
+{
+  "msg": {
+    "Hello": {
+      "English": "Hello",
+      "French": "Hello"
+    },
+    "Goodbye": {
+      "English": "Goodbye",
+      "French": "Goodbye"
+    }
+  },
+  "cmd": {
+    "Hello": {
+      "English": "Hello",
+      "French": "Hello"
+    },
+    "Goodbye": {
+      "English": "Goodbye",
+      "French": "Goodbye"
+    }
+  },
+  "terms": {
+    "Hello": {
+      "English": "Hello",
+      "French": "Hello"
+    },
+    "Goodbye": {
+      "English": "Goodbye",
+      "French": "Goodbye"
+    }
+  },
+  "custom": {
+    "Hello": {
+      "English": "Hello",
+      "French": "Hello"
+    },
+    "Goodbye": {
+      "English": "Goodbye",
+      "French": "Goodbye"
+    }
+  }
+}
