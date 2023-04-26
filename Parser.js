@@ -51,6 +51,9 @@ function generateTranslations() {
                     event.pages.forEach(page => {
                         if (page && page.list) {
                             page.list.forEach((item, index) => {
+                                // Messages (Dialogue) have the code 401, multi-line dialogue are separated in chunks in the map data
+                                // So when storing them in the JSON, we concatenate them into a single string separated by \n
+                                // Until we reach a different code, which means we reached the end of the chunk.
                                 if (item.code === 401) {
                                     if (item.parameters && item.parameters.length > 0) {
                                         let parameter = item.parameters[0].trim();
@@ -71,6 +74,7 @@ function generateTranslations() {
                                     concatenatedString = "";
                                 }
 
+                                // Commands (Menu options) have the code 102 and are handled differently
                                 if (item.code === 102 && Array.isArray(item.parameters) && Array.isArray(item.parameters[0])) {
                                     item.parameters[0].forEach(param => {
                                         if (typeof param === 'string') {
@@ -103,11 +107,13 @@ function generateTranslations() {
             translate(translations, untranslatedMsgs, 'msg');
             translate(translations, untranslatedCmds, 'cmd');
 
+            // Gets an array of all keys, and returns the count, or 0 if no keys exist
             const msgChildren = translations.msg ? Object.keys(translations.msg).length : 0;
             const cmdChildren = translations.cmd ? Object.keys(translations.cmd).length : 0;
             const termsChildren = translations.terms ? Object.keys(translations.terms).length : 0;
             const customChildren = translations.custom ? Object.keys(translations.custom).length : 0;
 
+            // Hardcoded until I add a language selection menu
             selectedLanguage = "notfrench"
 
             console.log(`[GENERATED TRANSLATIONS FOR ${selectedLanguage.toUpperCase()}]\n# of messages:   ${msgChildren.toString().padStart(8)} \n# of commands:   ${cmdChildren.toString().padStart(8)} \n# of terms:      ${termsChildren.toString().padStart(8)} \n# of custom:     ${customChildren.toString().padStart(8)}`);
@@ -144,6 +150,7 @@ function untranslatedCount() {
 
         console.log("UNTRANSLATED STRINGS");
         console.log(`${'LANGUAGE'.padEnd(10)} ${'MSG'.padEnd(6)} ${'CMD'.padEnd(6)} ${'TERMS'.padEnd(6)} | ${'CUSTOM'.padEnd(6)}`);
+        // Checks for untranslated strings by seeing if the key and value are the same for each language
         languages.forEach(language => {
             const msgUntranslated = translations.msg ? Object.entries(translations.msg).filter(([key, value]) => key === value[language]).length : 0;
             const cmdUntranslated = translations.cmd ? Object.entries(translations.cmd).filter(([key, value]) => key === value[language]).length : 0;
