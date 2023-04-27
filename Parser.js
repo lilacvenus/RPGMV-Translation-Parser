@@ -1,17 +1,11 @@
 const fs = require('fs');
 
-const languages = ["Français", "Spanish"]; // Adding more language auto-generates the fields.
-const menuOptions = ["Generate Translations", "Untranslated Count"];
-let translations = { msg: {}, cmd: {}, terms: {}, custom: {} }; // Empty translations template
+const languages = ["Français", "Spanish"];
+let translations = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
 // --------------------- //
 //      DRIVER CODE      //
 // --------------------- //
-
-console.log('[MENU]');
-menuOptions.forEach((option, index) => {
-    console.log(`${String(index)}${'.'.padEnd(4)} ${option}`);
-});
 
 generateTranslations();
 //untranslatedCount();
@@ -20,6 +14,7 @@ generateTranslations();
 // THAR BE FUNCTIONS BELOW
 // --------------------- //
 
+//translate(json template, the array of shit to add, which category);
 const translate = (translations, array, type) => {
     array.forEach(newTranslation => {
         languages.forEach(language => {
@@ -101,6 +96,7 @@ function generateTranslations() {
                 }
             });
 
+            console.log(mapNames.length + " map names found")
             // Write Data to translations variable before exporting as JSON
             translate(translations, mapNames, 'custom');
             translate(translations, untranslatedMsgs, 'msg');
@@ -125,50 +121,6 @@ function generateTranslations() {
 }
 
 function untranslatedCount() {
-    fs.readFile('Translations.json', (err, data) => {
-        if (err) throw err;
-        const translations = JSON.parse(data);
-        var languages = [];
-        const keysToCheck = ['msg', 'cmd', 'terms', 'custom'];
-
-        // Checks what languages are available by checking msg, then cmd, then terms, then custom
-        for (var i = 0; i < keysToCheck.length; i++) {
-            var key = keysToCheck[i];
-            if (translations.hasOwnProperty(key) && Object.values(translations[key])[0]) {
-                languages = Object.keys(translations[key][Object.keys(translations[key])[0]]);
-                if (languages.length > 0) { break; }
-            }
-        }
-        if (languages.length === 0) {
-            console.log("No languages found");
-            return;
-        }
-
-        console.log("UNTRANSLATED STRINGS");
-        console.log(`${'LANGUAGE'.padEnd(10)} ${'MSG'.padEnd(6)} ${'CMD'.padEnd(6)} ${'TERMS'.padEnd(6)} | ${'CUSTOM'.padEnd(6)}`);
-        // Checks for untranslated strings by seeing if the key and value are the same for each language
-        languages.forEach(language => {
-            const msgUntranslated = translations.msg ? Object.entries(translations.msg).filter(([key, value]) => key === value[language]).length : 0;
-            const cmdUntranslated = translations.cmd ? Object.entries(translations.cmd).filter(([key, value]) => key === value[language]).length : 0;
-            const termsUntranslated = translations.terms ? Object.entries(translations.terms).filter(([key, value]) => key === value[language]).length : 0;
-            const customUntranslated = translations.custom ? Object.entries(translations.custom).filter(([key, value]) => key === value[language]).length : 0;
-            console.log(`${language.padEnd(9)}: ${String(msgUntranslated).padEnd(6)} ${String(cmdUntranslated).padEnd(6)} ${String(termsUntranslated).padEnd(6)} | ${String(customUntranslated).padEnd(6)}`);
-        });
-
-        const msgUntranslated = translations.msg ? Object.entries(translations.msg).filter(([key, value]) => key === value[language]) : 0;
-        const cmdUntranslated = translations.cmd ? Object.entries(translations.cmd).filter(([key, value]) => key === value[language]) : 0;
-        const termsUntranslated = translations.terms ? Object.entries(translations.terms).filter(([key, value]) => key === value[language]) : 0;
-        const customUntranslated = translations.custom ? Object.entries(translations.custom).filter(([key, value]) => key === value[language]) : 0;
-
-        fs.writeFile('untranslated.json', data, (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-            console.log('Data has been written to untranslated.txt successfully.');
-          });
-
-    });
 }
 
 function overTranslated() {
