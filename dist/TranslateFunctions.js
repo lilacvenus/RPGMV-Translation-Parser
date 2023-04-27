@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Translate = exports.TranslateAll = void 0;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Translates everything in the game                                               //
+//  Converts all arrays to the JSON format for use by the translation plugin        //
 //  Input: Array of strings for languages,                                          //
 //         Array of string arrays [[msg], [cmd], [terms], [custom]]                 //
 //  Output: JSON of blank translations for all categories                           //
@@ -22,12 +22,12 @@ const TranslateAll = (languages, scraped_data) => {
 };
 exports.TranslateAll = TranslateAll;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Translates one category in the game                                             //
-//  Input: Array of strings for languages,                                          //
-//         Array of strings to generate translations for                            //
+//  Converts an array to the JSON format for use by the translation plugin          //
+//  Input: Array of strings for all the languages you want,                         //
+//         Array of strings to generate translations for,                           //
 //         "msg", "cmd", "terms", or "custom" depending on the category             //
-//         The existing JSON so it doesn't overwrite categories it isn't writing    //
-//  Output: JSON of previous translations + chosen translation cateogory            //
+//         The existing JSON so it doesn't overwrite old data,                      //
+//  Output: JSON of previous translations + chosen translation category             //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const Translate = (languages, content_array, category, existingJSON) => {
     let newJSON = Object.assign({}, existingJSON);
