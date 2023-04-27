@@ -1,4 +1,5 @@
-MapFiles/*.json
-ExampleTranslations.json
+.vscode/
+node_modules/
+MapFiles/
+package-lock.json
 Translations.json
-Scrapped.js
