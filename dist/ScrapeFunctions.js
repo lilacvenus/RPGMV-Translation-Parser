@@ -63,7 +63,7 @@ const ScrapeCommands = (folder_path, matching_files) => {
             if (event && event.pages) {
                 event.pages.forEach((page) => {
                     if (page && page.list) {
-                        page.list.forEach((item, index) => {
+                        page.list.forEach((item) => {
                             if (item.code === 102 && Array.isArray(item.parameters) && Array.isArray(item.parameters[0])) {
                                 item.parameters[0].forEach((param) => {
                                     if (typeof param === 'string') {
@@ -80,6 +80,11 @@ const ScrapeCommands = (folder_path, matching_files) => {
     return scraped_commands;
 };
 exports.ScrapeCommands = ScrapeCommands;
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Scrapes MapInfos.JSON folder which contains all level names in the game         //
+//  Input: The folder that contains the MapInfos.json file                          //
+//  Output: An array of all the map names                                           //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const ScrapeMapNames = (folder_path) => {
     try {
         const map_data = JSON.parse(readFileSync(`${folder_path}/MapInfos.json`, 'utf8'));

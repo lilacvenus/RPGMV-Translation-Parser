@@ -33,7 +33,7 @@ const translate = (global_JSON: Translations, content_array: string[], category:
         });
     });
 };
-  
+
 scraped_messages = ScrapeMessages(folder_path, matching_files);
 scraped_commands = ScrapeCommands(folder_path, matching_files);
 scraped_maps = ScrapeMapNames(folder_path);
@@ -44,4 +44,4 @@ translate(global_JSON, scraped_maps, "custom");
 fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
     if (err) throw err;
     console.log('The blank translations file has been saved as Translations.json!');
-  });
+});
