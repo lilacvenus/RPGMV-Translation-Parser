@@ -25,32 +25,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs"));
 const ScrapeFunctions_1 = require("./ScrapeFunctions");
+const TranslateFunctions_1 = require("./TranslateFunctions");
 const languages = ["Français", "Spanish"];
 const folder_path = "./MapFiles/";
 const matching_files = fs.readdirSync(folder_path).filter(file => file.match(/^Map\d{3}\.json$/)); // Regex to match MAP000.json files
 let scraped_messages = [];
 let scraped_commands = [];
-let scraped_maps = [];
+let scraped_terms = [];
+let scraped_custom = [];
 let global_JSON = {
     msg: {},
     cmd: {},
     terms: {},
     custom: {}
 };
-const translate = (global_JSON, content_array, category) => {
-    content_array.forEach(new_translation => {
-        languages.forEach(language => {
-            global_JSON[category][new_translation] = global_JSON[category][new_translation] || {};
-            global_JSON[category][new_translation][language] = new_translation;
-        });
-    });
-};
 scraped_messages = (0, ScrapeFunctions_1.ScrapeMessages)(folder_path, matching_files);
 scraped_commands = (0, ScrapeFunctions_1.ScrapeCommands)(folder_path, matching_files);
-scraped_maps = (0, ScrapeFunctions_1.ScrapeMapNames)(folder_path);
-translate(global_JSON, scraped_messages, "msg");
-translate(global_JSON, scraped_commands, "cmd");
-translate(global_JSON, scraped_maps, "custom");
+scraped_custom = scraped_custom.concat((0, ScrapeFunctions_1.ScrapeMapNames)(folder_path));
+// global_JSON = Translate(languages, scraped_commands, "cmd", global_JSON);
+// global_JSON = Translate(languages, scraped_messages, "msg", global_JSON);
+global_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, [scraped_messages, scraped_commands, scraped_terms, scraped_custom]);
 fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
     if (err)
         throw err;
