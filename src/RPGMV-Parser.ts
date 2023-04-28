@@ -9,16 +9,19 @@ const matching_files = readdirSync(folder_path).filter(file => file.match(/^Map\
 
 let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-const underStats = UnderTranslated(folder_path, matching_files, languages);
-console.log(underStats);
+// const underStats = UnderTranslated(folder_path, matching_files, languages);
+// console.log(underStats);
 
-const overStats = OverTranslated(folder_path, matching_files, languages);
-console.log(overStats);
+// const overStats = OverTranslated(folder_path, matching_files, languages);
+// console.log(overStats);
 
-// const scraped_data = ScrapeAll(folder_path, matching_files);
-// global_JSON = TranslateAll(languages, scraped_data);
+let returned_JSON = NotTranslated(folder_path, matching_files, languages);
+console.log(returned_JSON);
 
-writeFile('./output/Translations.json', JSON.stringify(global_JSON), (err) => {
+const scraped_data = ScrapeAll(folder_path, matching_files);
+global_JSON = TranslateAll(languages, scraped_data);
+
+writeFile('./output/NTranslations.json', JSON.stringify(returned_JSON), (err) => {
     if (err) throw err;
-    console.log('The blank translations file has been saved as Translations.json!');
+    console.log('Wow!');
 });
