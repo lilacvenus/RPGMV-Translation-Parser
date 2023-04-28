@@ -1,7 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScrapeMapNames = exports.ScrapeCommands = exports.ScrapeMessages = void 0;
+exports.ScrapeMapNames = exports.ScrapeCommands = exports.ScrapeMessages = exports.ScrapeAll = void 0;
 const { readdirSync, readFileSync } = require('fs');
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  A simple function that combines all other functions into one command            //
+//  Input: The folder of map files and the list of MAP000 files                     //
+//  Output: A 2D array of all the scraped data                                      //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+const ScrapeAll = (folder_path, matching_files) => {
+    let scraped_messages = [];
+    let scraped_commands = [];
+    let scraped_terms = [];
+    let scraped_custom = [];
+    scraped_messages = (0, exports.ScrapeMessages)(folder_path, matching_files);
+    scraped_commands = (0, exports.ScrapeCommands)(folder_path, matching_files);
+    scraped_custom = (0, exports.ScrapeMapNames)(folder_path);
+    return [scraped_messages, scraped_commands, scraped_terms, scraped_custom];
+};
+exports.ScrapeAll = ScrapeAll;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Looks for items with the 401 code, which are the dialogue messages              //
 //  Concatenates them into a single string separated by \n for multi-line messages  //

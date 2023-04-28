@@ -1,5 +1,24 @@
 const { readdirSync, readFileSync } = require('fs');
 
+
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  A simple function that combines all other functions into one command            //
+//  Input: The folder of map files and the list of MAP000 files                     //
+//  Output: A 2D array of all the scraped data                                      //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+export const ScrapeAll = (folder_path: string, matching_files: string[]) => {
+    let scraped_messages: string[] = [];
+    let scraped_commands: string[] = [];
+    let scraped_terms: string[] = [];
+    let scraped_custom: string[] = [];
+
+    scraped_messages = ScrapeMessages(folder_path, matching_files);
+    scraped_commands = ScrapeCommands(folder_path, matching_files);
+    scraped_custom = ScrapeMapNames(folder_path);
+
+    return [scraped_messages, scraped_commands, scraped_terms, scraped_custom];
+};
+
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Looks for items with the 401 code, which are the dialogue messages              //
 //  Concatenates them into a single string separated by \n for multi-line messages  //
