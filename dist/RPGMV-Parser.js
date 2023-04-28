@@ -24,19 +24,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs"));
-const ScrapeFunctions_1 = require("./ScrapeFunctions");
-const TranslateFunctions_1 = require("./TranslateFunctions");
+const StatsFunctions_1 = require("./StatsFunctions");
 const languages = ["Français", "Spanish"];
 const folder_path = "./MapFiles/";
 const matching_files = fs.readdirSync(folder_path).filter(file => file.match(/^Map\d{3}\.json$/)); // Regex to match MAP000.json files
 let global_JSON = { msg: {}, cmd: {}, terms: {}, custom: {} };
-const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
-global_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
-    if (err)
-        throw err;
-    console.log('The blank translations file has been saved as Translations.json!');
-});
+(0, StatsFunctions_1.OverTranslated)(folder_path, matching_files, languages);
+// const scraped_data = ScrapeAll(folder_path, matching_files);
+// global_JSON = TranslateAll(languages, scraped_data);
+// fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
+//     if (err) throw err;
+//     console.log('The blank translations file has been saved as Translations.json!');
+// });
 // let scraped_messages: string[] = scraped_data[0];
 // let scraped_commands: string[] = scraped_data[1];
 // let scraped_terms: string[] = scraped_data[2];

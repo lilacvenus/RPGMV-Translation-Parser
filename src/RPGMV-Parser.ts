@@ -9,13 +9,19 @@ const matching_files = fs.readdirSync(folder_path).filter(file => file.match(/^M
 
 let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-const scraped_data = ScrapeAll(folder_path, matching_files);
-global_JSON = TranslateAll(languages, scraped_data);
+OverTranslated(folder_path, matching_files, languages);
 
-fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
-    if (err) throw err;
-    console.log('The blank translations file has been saved as Translations.json!');
-});
+// const scraped_data = ScrapeAll(folder_path, matching_files);
+// global_JSON = TranslateAll(languages, scraped_data);
+
+// fs.writeFile('Translations.json', JSON.stringify(global_JSON), (err) => {
+//     if (err) throw err;
+//     console.log('The blank translations file has been saved as Translations.json!');
+// });
+
+
+
+
 
 // let scraped_messages: string[] = scraped_data[0];
 // let scraped_commands: string[] = scraped_data[1];
