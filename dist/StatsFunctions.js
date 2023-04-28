@@ -28,61 +28,45 @@ const ScrapeFunctions_1 = require("./ScrapeFunctions");
 const TranslateFunctions_1 = require("./TranslateFunctions");
 const fs = __importStar(require("fs"));
 const { readdirSync, readFileSync } = require('fs');
-// TODO: Add a count for each category rather than just a total count in UnderTranslated and OverTranslated
-const UnderTranslated = (folder_path, matching_files, languages) => {
+const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync('Translations.json', 'utf8'));
-    let under_count = 0;
+    const old_JSON = JSON.parse(readFileSync('./output/Translations.json', 'utf8'));
+    let returned_count = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
-    const under_JSON = {};
-    categories.forEach((category) => {
+    const output_JSON = {};
+    categories.forEach((category, index) => {
         const oldCategory = old_JSON[category];
         const newCategory = new_JSON[category];
         if (oldCategory && newCategory) {
             Object.entries(newCategory).forEach(([key, value]) => {
-                if (!oldCategory.hasOwnProperty(key)) {
-                    under_JSON[category] = under_JSON[category] || {};
-                    under_JSON[category][key] = value;
-                    under_count++;
+                if (mode === 'under' && !oldCategory.hasOwnProperty(key)) {
+                    output_JSON[category] = output_JSON[category] || {};
+                    output_JSON[category][key] = value;
+                    returned_count[index]++;
+                }
+                else if (mode === 'over' && oldCategory.hasOwnProperty(key) && !newCategory.hasOwnProperty(key)) {
+                    output_JSON[category] = output_JSON[category] || {};
+                    output_JSON[category][key] = oldCategory[key];
+                    returned_count[index]++;
                 }
             });
         }
     });
-    fs.writeFile('UnderTranslated.json', JSON.stringify(under_JSON), (err) => {
+    const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
+    fs.writeFile(("./output/" + filename), JSON.stringify(output_JSON), (err) => {
         if (err)
             throw err;
-        console.log('The under-translated file has been saved as UnderTranslated.json!');
+        console.log(`The ${filename} file has been saved!`);
     });
-    return under_count;
+    return returned_count;
+};
+const UnderTranslated = (folder_path, matching_files, languages) => {
+    return GeneralTranslated(folder_path, matching_files, languages, 'under');
 };
 exports.UnderTranslated = UnderTranslated;
 const OverTranslated = (folder_path, matching_files, languages) => {
-    const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
-    const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync('Translations.json', 'utf8'));
-    let over_count = 0;
-    const categories = ['msg', 'cmd', 'terms', 'custom'];
-    const over_JSON = {};
-    categories.forEach((category) => {
-        const oldCategory = old_JSON[category];
-        const newCategory = new_JSON[category];
-        if (oldCategory && newCategory) {
-            Object.entries(oldCategory).forEach(([key, value]) => {
-                if (!newCategory.hasOwnProperty(key)) {
-                    over_JSON[category] = over_JSON[category] || {};
-                    over_JSON[category][key] = value;
-                    over_count++;
-                }
-            });
-        }
-    });
-    fs.writeFile('OverTranslated.json', JSON.stringify(over_JSON), (err) => {
-        if (err)
-            throw err;
-        console.log('The over-translated file has been saved as OverTranslated.json!');
-    });
-    return over_count;
+    return GeneralTranslated(folder_path, matching_files, languages, 'over');
 };
 exports.OverTranslated = OverTranslated;
 // Output translations that aren't changed from the generated file 
