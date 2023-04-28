@@ -1,37 +1,13 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotTranslated = exports.OverTranslated = exports.UnderTranslated = void 0;
 const ScrapeFunctions_1 = require("./ScrapeFunctions");
 const TranslateFunctions_1 = require("./TranslateFunctions");
-const fs = __importStar(require("fs"));
-const { readdirSync, readFileSync } = require('fs');
+const fs_1 = require("fs");
 const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync('./output/Translations.json', 'utf8'));
+    const old_JSON = JSON.parse((0, fs_1.readFileSync)('./output/Translations.json', 'utf8'));
     let returned_count = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON = {};
@@ -54,7 +30,7 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
         }
     });
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
-    fs.writeFile(("./output/" + filename), JSON.stringify(output_JSON), (err) => {
+    (0, fs_1.writeFile)(("./output/" + filename), JSON.stringify(output_JSON), (err) => {
         if (err)
             throw err;
         console.log(`The ${filename} file has been saved!`);

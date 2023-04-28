@@ -1,7 +1,6 @@
 import { ScrapeAll } from './ScrapeFunctions';
 import { TranslateAll } from './TranslateFunctions';
-import * as fs from 'fs';
-const { readdirSync, readFileSync } = require('fs');
+import { readFileSync, writeFile } from 'fs';
 
 const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
@@ -31,7 +30,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
     });
 
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
-    fs.writeFile(("./output/" + filename), JSON.stringify(output_JSON), (err: any) => {
+    writeFile(("./output/" + filename), JSON.stringify(output_JSON), (err: any) => {
         if (err) throw err;
         console.log(`The ${filename} file has been saved!`);
     });
