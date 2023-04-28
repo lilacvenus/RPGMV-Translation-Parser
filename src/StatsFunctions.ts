@@ -1,6 +1,7 @@
 import { ScrapeAll } from './ScrapeFunctions';
 import { TranslateAll } from './TranslateFunctions';
 import { readFileSync, writeFile } from 'fs';
+const output_folder: string = "./output/";
 
 // TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
 
@@ -15,7 +16,7 @@ import { readFileSync, writeFile } from 'fs';
 const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
     const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync('./output/Translations.json', 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
     let returned_count: number[] = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON: Record<string, any> = {};
@@ -40,7 +41,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
     });
 
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
-    writeFile(("./output/" + filename), JSON.stringify(output_JSON), (err: any) => {
+    writeFile((output_folder+ filename), JSON.stringify(output_JSON), (err: any) => {
         if (err) throw err;
         console.log(`The ${filename} file has been saved!`);
     });
@@ -58,7 +59,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
 export const NotTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
     const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync('./output/Translations.json', 'utf8'))
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'))
 
     const result: Record<string, any> = {};
 
@@ -76,19 +77,14 @@ export const NotTranslated = (folder_path: string, matching_files: string[], lan
                 }
             }
 
-            if (Object.keys(result[category][item]).length === 0) {
-                delete result[category][item];
-            }
+            if (Object.keys(result[category][item]).length === 0) { delete result[category][item]; }
         }
 
-        if (Object.keys(result[category]).length === 0) {
-            delete result[category];
-        }
+        if (Object.keys(result[category]).length === 0) { delete result[category]; }
     }
 
     return result;
 }
-
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //

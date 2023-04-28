@@ -4,6 +4,7 @@ exports.OverTranslated = exports.UnderTranslated = exports.NotTranslated = void 
 const ScrapeFunctions_1 = require("./ScrapeFunctions");
 const TranslateFunctions_1 = require("./TranslateFunctions");
 const fs_1 = require("fs");
+const output_folder = "./output/";
 // TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Outputs JSON for missing or excess translations                                 //
@@ -16,7 +17,7 @@ const fs_1 = require("fs");
 const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-    const old_JSON = JSON.parse((0, fs_1.readFileSync)('./output/Translations.json', 'utf8'));
+    const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
     let returned_count = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON = {};
@@ -39,7 +40,7 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
         }
     });
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
-    (0, fs_1.writeFile)(("./output/" + filename), JSON.stringify(output_JSON), (err) => {
+    (0, fs_1.writeFile)((output_folder + filename), JSON.stringify(output_JSON), (err) => {
         if (err)
             throw err;
         console.log(`The ${filename} file has been saved!`);
@@ -56,7 +57,7 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
 const NotTranslated = (folder_path, matching_files, languages) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-    const old_JSON = JSON.parse((0, fs_1.readFileSync)('./output/Translations.json', 'utf8'));
+    const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
     const result = {};
     for (const category in new_JSON) {
         result[category] = {};
