@@ -11,12 +11,23 @@ const TranslateAll = (languages, scraped_data) => {
     let JSON = { msg: {}, cmd: {}, terms: {}, custom: {} };
     const category = ["msg", "cmd", "terms", "custom"];
     scraped_data.forEach((current_array, index) => {
-        current_array.forEach((new_translation) => {
-            languages.forEach((language) => {
-                JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
-                JSON[category[index]][new_translation][language] = new_translation;
+        if (index === 3) {
+            const translations = {};
+            current_array.forEach((new_translation) => {
+                languages.forEach((language) => {
+                    translations[new_translation] = new_translation;
+                    JSON[category[index]][language] = translations;
+                });
             });
-        });
+        }
+        else {
+            current_array.forEach((new_translation) => {
+                languages.forEach((language) => {
+                    JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
+                    JSON[category[index]][new_translation][language] = new_translation;
+                });
+            });
+        }
     });
     return JSON;
 };

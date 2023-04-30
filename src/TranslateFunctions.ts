@@ -12,12 +12,24 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
     let JSON: Translations = { msg: {}, cmd: {}, terms: {}, custom: {} };
     const category: string[] = ["msg", "cmd", "terms", "custom"];
     scraped_data.forEach((current_array: string[], index: number) => {
-        current_array.forEach((new_translation: string) => {
-            languages.forEach((language: string) => {
-                JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
-                JSON[category[index]][new_translation][language] = new_translation;
+        if (index === 3) {
+            const translations: { [key: string]: string } = {};
+            current_array.forEach((new_translation: string) => {
+              languages.forEach((language: string) => {
+                translations[new_translation] = new_translation;
+                JSON[category[index]][language] = translations;
+              });
             });
-        });
+          }
+        else {
+            current_array.forEach((new_translation: string) => {
+                languages.forEach((language: string) => {
+                    JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
+                    JSON[category[index]][new_translation][language] = new_translation;
+                });
+            });
+        }
+        
     });
 
     return JSON;
