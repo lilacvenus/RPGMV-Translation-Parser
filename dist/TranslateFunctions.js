@@ -16,7 +16,7 @@ const TranslateAll = (languages, scraped_data) => {
             current_array.forEach((new_translation) => {
                 languages.forEach((language) => {
                     translations[new_translation] = new_translation;
-                    JSON[category[index]][language] = translations;
+                    JSON["custom"][language] = translations;
                 });
             });
         }
@@ -42,12 +42,23 @@ exports.TranslateAll = TranslateAll;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const Translate = (languages, content_array, category, existingJSON) => {
     let newJSON = Object.assign({}, existingJSON);
-    content_array.forEach(new_translation => {
-        languages.forEach(language => {
-            newJSON[category][new_translation] = newJSON[category][new_translation] || {};
-            newJSON[category][new_translation][language] = new_translation;
+    if (category === "custom") {
+        const translations = {};
+        content_array.forEach((new_translation) => {
+            languages.forEach((language) => {
+                translations[new_translation] = new_translation;
+                newJSON["custom"][language] = translations;
+            });
         });
-    });
+    }
+    else {
+        content_array.forEach(new_translation => {
+            languages.forEach(language => {
+                newJSON[category][new_translation] = newJSON[category][new_translation] || {};
+                newJSON[category][new_translation][language] = new_translation;
+            });
+        });
+    }
     return newJSON;
 };
 exports.Translate = Translate;

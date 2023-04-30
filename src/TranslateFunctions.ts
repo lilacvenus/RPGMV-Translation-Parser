@@ -15,12 +15,12 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
         if (index === 3) {
             const translations: { [key: string]: string } = {};
             current_array.forEach((new_translation: string) => {
-              languages.forEach((language: string) => {
-                translations[new_translation] = new_translation;
-                JSON[category[index]][language] = translations;
-              });
+                languages.forEach((language: string) => {
+                    translations[new_translation] = new_translation;
+                    JSON["custom"][language] = translations;
+                });
             });
-          }
+        }
         else {
             current_array.forEach((new_translation: string) => {
                 languages.forEach((language: string) => {
@@ -29,7 +29,7 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
                 });
             });
         }
-        
+
     });
 
     return JSON;
@@ -45,12 +45,26 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const Translate = (languages: string[], content_array: string[], category: keyof Translations, existingJSON: Translations) => {
     let newJSON: Translations = { ...existingJSON };
-    content_array.forEach(new_translation => {
-        languages.forEach(language => {
-            newJSON[category][new_translation] = newJSON[category][new_translation] || {};
-            newJSON[category][new_translation][language] = new_translation;
+
+    if (category === "custom") {
+        const translations: { [key: string]: string } = {};
+        content_array.forEach((new_translation: string) => {
+            languages.forEach((language: string) => {
+                translations[new_translation] = new_translation;
+                newJSON["custom"][language] = translations;
+            });
         });
-    });
+    }
+
+    else {
+        content_array.forEach(new_translation => {
+            languages.forEach(language => {
+                newJSON[category][new_translation] = newJSON[category][new_translation] || {};
+                newJSON[category][new_translation][language] = new_translation;
+            });
+        });
+    }
+
 
     return newJSON;
 };
