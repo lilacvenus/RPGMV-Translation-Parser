@@ -16,14 +16,14 @@ const output_folder = "./output/";
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
-    const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
+    const not_custom_data = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
     let returned_count = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON = {};
     categories.forEach((category, index) => {
         const oldCategory = old_JSON[category];
-        const newCategory = new_JSON[category];
+        const newCategory = not_custom_data[category];
         if (oldCategory && newCategory) {
             Object.entries(newCategory).forEach(([key, value]) => {
                 if (mode === 'under' && !oldCategory.hasOwnProperty(key)) {
@@ -54,32 +54,28 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
 //        An array of the languages to check for                                    //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const NotTranslated = (folder_path, matching_files, languages) => {
-    const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
-    const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
+const NotTranslated = (languages) => {
+    // Get the JSON that's already been translated
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
-    const result = {};
-    for (const category in new_JSON) {
-        result[category] = {};
-        for (const item in new_JSON[category]) {
-            result[category][item] = {};
-            for (const lang of languages) {
-                if (old_JSON[category][item] && old_JSON[category][item][lang] === new_JSON[category][item][lang]) {
-                    result[category][item][lang] = new_JSON[category][item][lang];
+    // Splitting the JSON data into two variables
+    const { msg, cmd, terms, custom } = old_JSON;
+    const not_custom_data = { msg, cmd, terms };
+    const custom_data = { custom };
+    const matchingKeys = {};
+    // Iterate through each language
+    languages.forEach((language) => {
+        const translations = custom_data.custom[language];
+        // Iterate through each key-value pair in the translations
+        Object.entries(translations).forEach(([key, value]) => {
+            if (key === value) {
+                if (!matchingKeys.hasOwnProperty(language)) {
+                    matchingKeys[language] = {};
                 }
-                else if (!old_JSON[category][item]) {
-                    result[category][item][lang] = new_JSON[category][item][lang];
-                }
+                matchingKeys[language][key] = value;
             }
-            if (Object.keys(result[category][item]).length === 0) {
-                delete result[category][item];
-            }
-        }
-        if (Object.keys(result[category]).length === 0) {
-            delete result[category];
-        }
-    }
-    return result;
+        });
+    });
+    return { custom: matchingKeys };
 };
 exports.NotTranslated = NotTranslated;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//

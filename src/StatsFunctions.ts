@@ -1,5 +1,5 @@
 import { ScrapeAll } from './ScrapeFunctions';
-import { TranslateAll } from './TranslateFunctions';
+import { Translate, TranslateAll } from './TranslateFunctions';
 import { readFileSync, writeFile } from 'fs';
 const output_folder: string = "./output/";
 
@@ -15,7 +15,7 @@ const output_folder: string = "./output/";
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
-    const new_JSON = TranslateAll(languages, scraped_data);
+    const not_custom_data = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
     let returned_count: number[] = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
@@ -23,7 +23,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
 
     categories.forEach((category, index) => {
         const oldCategory = old_JSON[category];
-        const newCategory = new_JSON[category];
+        const newCategory = not_custom_data[category];
 
         if (oldCategory && newCategory) {
             Object.entries(newCategory).forEach(([key, value]) => {
@@ -41,7 +41,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
     });
 
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
-    writeFile((output_folder+ filename), JSON.stringify(output_JSON), (err: any) => {
+    writeFile((output_folder + filename), JSON.stringify(output_JSON), (err: any) => {
         if (err) throw err;
         console.log(`The ${filename} file has been saved!`);
     });
@@ -56,35 +56,36 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
 //        An array of the languages to check for                                    //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const NotTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
-    const scraped_data = ScrapeAll(folder_path, matching_files);
-    const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'))
+export const NotTranslated = (languages: string[]) => {
+    // Get the JSON that's already been translated
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
 
-    const result: Record<string, any> = {};
+    // Splitting the JSON data into two variables
+    const { msg, cmd, terms, custom } = old_JSON;
+    const not_custom_data: any = { msg, cmd, terms };
+    const custom_data: any = { custom };
 
-    for (const category in new_JSON) {
-        result[category] = {};
+    const matchingKeys: any = {};
 
-        for (const item in new_JSON[category]) {
-            result[category][item] = {};
+    // Iterate through each language
+    languages.forEach((language) => {
+        const translations = custom_data.custom[language];
 
-            for (const lang of languages) {
-                if (old_JSON[category][item] && old_JSON[category][item][lang] === new_JSON[category][item][lang]) {
-                    result[category][item][lang] = new_JSON[category][item][lang];
-                } else if (!old_JSON[category][item]) {
-                    result[category][item][lang] = new_JSON[category][item][lang];
+        // Iterate through each key-value pair in the translations
+        Object.entries(translations).forEach(([key, value]) => {
+            if (key === value) {
+                if (!matchingKeys.hasOwnProperty(language)) {
+                    matchingKeys[language] = {};
                 }
+                matchingKeys[language][key] = value;
             }
+        });
+    });
 
-            if (Object.keys(result[category][item]).length === 0) { delete result[category][item]; }
-        }
+    return { custom: matchingKeys };
+};
 
-        if (Object.keys(result[category]).length === 0) { delete result[category]; }
-    }
 
-    return result;
-}
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //

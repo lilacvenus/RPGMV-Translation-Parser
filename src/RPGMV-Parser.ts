@@ -12,7 +12,8 @@ let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
 const scraped_data = ScrapeAll(mapfile_folder, matching_files);
 global_JSON = TranslateAll(languages, scraped_data);
-let test_JSON = NotTranslated(mapfile_folder, matching_files, languages);
+let test_JSON = NotTranslated(languages);
+console.log(test_JSON);
 
 writeFile(output_folder + 'NotTranslated.json', JSON.stringify(test_JSON), (err) => {
     if (err) throw err;

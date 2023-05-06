@@ -11,7 +11,8 @@ const matching_files = (0, fs_1.readdirSync)(mapfile_folder).filter(file => file
 let global_JSON = { msg: {}, cmd: {}, terms: {}, custom: {} };
 const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(mapfile_folder, matching_files);
 global_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
-let test_JSON = (0, StatsFunctions_1.NotTranslated)(mapfile_folder, matching_files, languages);
+let test_JSON = (0, StatsFunctions_1.NotTranslated)(languages);
+console.log(test_JSON);
 (0, fs_1.writeFile)(output_folder + 'NotTranslated.json', JSON.stringify(test_JSON), (err) => {
     if (err)
         throw err;
