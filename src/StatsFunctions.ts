@@ -60,18 +60,37 @@ export const NotTranslated = (languages: string[]) => {
     // Get the JSON that's already been translated
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
 
-    // Splitting the JSON data into two variables
     const { msg, cmd, terms, custom } = old_JSON;
     const not_custom_data: any = { msg, cmd, terms };
     const custom_data: any = { custom };
 
+    const result: Record<string, any> = {};
+    for (const category in not_custom_data) {
+        result[category] = {};
+        for (const key in not_custom_data[category]) {
+            const translations = not_custom_data[category][key];
+            let isTranslated = true;
+            for (const lang of languages) {
+                if (translations[lang] !== old_JSON[category][key][lang]) {
+                    isTranslated = false;
+                    break;
+                }
+            }
+            if (isTranslated) {
+                result[category][key] = {};
+                for (const lang of languages) {
+                    if (translations[lang] !== '') {
+                        result[category][key][lang] = translations[lang];
+                    }
+                }
+            }
+        }
+    }
+
     const matchingKeys: any = {};
 
-    // Iterate through each language
     languages.forEach((language) => {
         const translations = custom_data.custom[language];
-
-        // Iterate through each key-value pair in the translations
         Object.entries(translations).forEach(([key, value]) => {
             if (key === value) {
                 if (!matchingKeys.hasOwnProperty(language)) {
@@ -82,7 +101,7 @@ export const NotTranslated = (languages: string[]) => {
         });
     });
 
-    return { custom: matchingKeys };
+    return { ...result, ...matchingKeys };
 };
 
 
