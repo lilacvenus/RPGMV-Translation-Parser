@@ -3,15 +3,15 @@ import { UnderTranslated, OverTranslated, NotTranslated } from './StatsFunctions
 import { Translate, TranslateAll } from './TranslateFunctions';
 import { writeFile, readdirSync } from 'fs';
 
-const languages: string[] = ["Français"];
+const languages: string[] = ["Français", "Spanish"];
 const mapfile_folder: string = "./MapFiles/";
 const output_folder: string = "./output/";
 const matching_files = readdirSync(mapfile_folder).filter(file => file.match(/^Map\d{3}\.json$/)); // Regex to match MAP000.json files
 
 let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-const scraped_data = ScrapeAll(mapfile_folder, matching_files);
-global_JSON = TranslateAll(languages, scraped_data);
+// const scraped_data = ScrapeAll(mapfile_folder, matching_files);
+// global_JSON = TranslateAll(languages, scraped_data);
 let test_JSON = NotTranslated(languages);
 console.log(test_JSON);
 

@@ -65,27 +65,73 @@ export const NotTranslated = (languages: string[]) => {
     const custom_data: any = { custom };
 
     const result: Record<string, any> = {};
-    for (const category in not_custom_data) {
-        result[category] = {};
-        for (const key in not_custom_data[category]) {
-            const translations = not_custom_data[category][key];
-            let isTranslated = true;
-            for (const lang of languages) {
-                if (translations[lang] !== old_JSON[category][key][lang]) {
-                    isTranslated = false;
-                    break;
-                }
+
+    // Iterate over msg category
+    for (const key in msg) {
+        let includeKey = true;
+        const translations: Record<string, string> = {};
+
+        // Check for translations in the specified languages
+        for (const lang of languages) {
+            if (msg[key][lang] !== key) {
+                includeKey = false;
+                break;
             }
-            if (isTranslated) {
-                result[category][key] = {};
-                for (const lang of languages) {
-                    if (translations[lang] !== '') {
-                        result[category][key][lang] = translations[lang];
-                    }
-                }
-            }
+            translations[lang] = msg[key][lang];
+        }
+
+        // Include the key in the result if translations match
+        if (includeKey) {
+            result.msg[key] = translations;
         }
     }
+
+    // Iterate over cmd category
+    for (const key in cmd) {
+        let includeKey = true;
+        const translations: Record<string, string> = {};
+
+        // Check for translations in the specified languages
+        for (const lang of languages) {
+            if (cmd[key][lang] !== key) {
+                includeKey = false;
+                break;
+            }
+            translations[lang] = cmd[key][lang];
+        }
+
+        // Include the key in the result if translations match
+        if (includeKey) {
+            result.cmd[key] = translations;
+        }
+    }
+
+    // Iterate over terms category
+    for (const key in terms) {
+        let includeKey = true;
+        const translations: Record<string, string> = {};
+
+        // Check for translations in the specified languages
+        for (const lang of languages) {
+            if (terms[key][lang] !== key) {
+                includeKey = false;
+                break;
+            }
+            translations[lang] = terms[key][lang];
+        }
+
+        // Include the key in the result if translations match
+        if (includeKey) {
+            result.terms[key] = translations;
+        }
+    }
+
+    return result;
+
+
+
+
+
 
     const matchingKeys: any = {};
 
@@ -101,7 +147,7 @@ export const NotTranslated = (languages: string[]) => {
         });
     });
 
-    return { ...result, ...matchingKeys };
+    return { ...result, custom: { ...matchingKeys } };
 };
 
 
