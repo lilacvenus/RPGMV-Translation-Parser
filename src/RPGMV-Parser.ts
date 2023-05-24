@@ -10,15 +10,19 @@ const matching_files = readdirSync(mapfile_folder).filter(file => file.match(/^M
 
 let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
+UnderTranslated(mapfile_folder, matching_files, languages);
+OverTranslated(mapfile_folder, matching_files, languages);
+
 // const scraped_data = ScrapeAll(mapfile_folder, matching_files);
 // global_JSON = TranslateAll(languages, scraped_data);
-let test_JSON = NotTranslated();
-console.log(test_JSON);
 
-writeFile(output_folder + 'NotTranslated.json', JSON.stringify(test_JSON), (err) => {
-    if (err) throw err;
-    console.log('Wowie!');
-});
+// let test_JSON = NotTranslated();
+// console.log(test_JSON);
+
+// writeFile(output_folder + 'NotTranslated.json', JSON.stringify(test_JSON), (err) => {
+//     if (err) throw err;
+//     console.log('Wowie!');
+// });
 
 // writeFile(output_folder + 'Translations.json', JSON.stringify(global_JSON), (err) => {
 //     if (err) throw err;

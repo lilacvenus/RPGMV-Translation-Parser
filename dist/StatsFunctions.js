@@ -16,36 +16,18 @@ const output_folder = "./output/";
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
-    const not_custom_data = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
+    const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
-    let returned_count = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON = {};
-    categories.forEach((category, index) => {
-        const oldCategory = old_JSON[category];
-        const newCategory = not_custom_data[category];
-        if (oldCategory && newCategory) {
-            Object.entries(newCategory).forEach(([key, value]) => {
-                if (mode === 'under' && !oldCategory.hasOwnProperty(key)) {
-                    output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = value;
-                    returned_count[index]++;
-                }
-                else if (mode === 'over' && oldCategory.hasOwnProperty(key) && !newCategory.hasOwnProperty(key)) {
-                    output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = oldCategory[key];
-                    returned_count[index]++;
-                }
-            });
-        }
-    });
+    // Change code here
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
     (0, fs_1.writeFile)((output_folder + filename), JSON.stringify(output_JSON), (err) => {
         if (err)
             throw err;
         console.log(`The ${filename} file has been saved!`);
     });
-    return returned_count;
+    return;
 };
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 // Filters out translated objects from Translations.json in the output folder       //

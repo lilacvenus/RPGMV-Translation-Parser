@@ -15,30 +15,12 @@ const output_folder: string = "./output/";
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
-    const not_custom_data = TranslateAll(languages, scraped_data);
+    const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
-    let returned_count: number[] = [0, 0, 0, 0];
     const categories = ['msg', 'cmd', 'terms', 'custom'];
     const output_JSON: Record<string, any> = {};
 
-    categories.forEach((category, index) => {
-        const oldCategory = old_JSON[category];
-        const newCategory = not_custom_data[category];
-
-        if (oldCategory && newCategory) {
-            Object.entries(newCategory).forEach(([key, value]) => {
-                if (mode === 'under' && !oldCategory.hasOwnProperty(key)) {
-                    output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = value;
-                    returned_count[index]++;
-                } else if (mode === 'over' && oldCategory.hasOwnProperty(key) && !newCategory.hasOwnProperty(key)) {
-                    output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = oldCategory[key];
-                    returned_count[index]++;
-                }
-            });
-        }
-    });
+    // Change code here
 
     const filename = mode === 'under' ? 'UnderTranslated.json' : 'OverTranslated.json';
     writeFile((output_folder + filename), JSON.stringify(output_JSON), (err: any) => {
@@ -46,7 +28,7 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
         console.log(`The ${filename} file has been saved!`);
     });
 
-    return returned_count;
+    return;
 };
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
