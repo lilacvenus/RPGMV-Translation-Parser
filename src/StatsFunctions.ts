@@ -50,10 +50,8 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
 };
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-// Filters out translated objects from newly generated file and user input          //
-// Input: A file path to the folder containing the scraped data                     //
-//        An array of MAP000 file names                                             //
-//        An array of the languages to check for                                    //
+// Filters out translated objects from Translations.json in the output folder       //
+// Input: None                                                                      //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const NotTranslated = () => {
@@ -108,10 +106,6 @@ export const NotTranslated = () => {
 
     return old_JSON;
 };
-
-
-
-
 
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//

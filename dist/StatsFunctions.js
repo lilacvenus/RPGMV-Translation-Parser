@@ -48,10 +48,8 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
     return returned_count;
 };
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-// Filters out translated objects from newly generated file and user input          //
-// Input: A file path to the folder containing the scraped data                     //
-//        An array of MAP000 file names                                             //
-//        An array of the languages to check for                                    //
+// Filters out translated objects from Translations.json in the output folder       //
+// Input: None                                                                      //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const NotTranslated = () => {
