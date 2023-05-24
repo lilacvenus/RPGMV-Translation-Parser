@@ -12,7 +12,7 @@ let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
 // const scraped_data = ScrapeAll(mapfile_folder, matching_files);
 // global_JSON = TranslateAll(languages, scraped_data);
-let test_JSON = NotTranslated(languages);
+let test_JSON = NotTranslated();
 console.log(test_JSON);
 
 writeFile(output_folder + 'NotTranslated.json', JSON.stringify(test_JSON), (err) => {

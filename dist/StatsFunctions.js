@@ -54,78 +54,45 @@ const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
 //        An array of the languages to check for                                    //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const NotTranslated = (languages) => {
+const NotTranslated = () => {
     // Get the JSON that's already been translated
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
-    const { msg, cmd, terms, custom } = old_JSON;
-    const not_custom_data = { msg, cmd, terms };
-    const custom_data = { custom };
-    const result = {};
-    // Iterate over msg category
-    for (const key in msg) {
-        let includeKey = true;
-        const translations = {};
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (msg[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = msg[key][lang];
-        }
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.msg[key] = translations;
-        }
-    }
-    // Iterate over cmd category
-    for (const key in cmd) {
-        let includeKey = true;
-        const translations = {};
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (cmd[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = cmd[key][lang];
-        }
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.cmd[key] = translations;
-        }
-    }
-    // Iterate over terms category
-    for (const key in terms) {
-        let includeKey = true;
-        const translations = {};
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (terms[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = terms[key][lang];
-        }
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.terms[key] = translations;
-        }
-    }
-    return result;
-    const matchingKeys = {};
-    languages.forEach((language) => {
-        const translations = custom_data.custom[language];
-        Object.entries(translations).forEach(([key, value]) => {
-            if (key === value) {
-                if (!matchingKeys.hasOwnProperty(language)) {
-                    matchingKeys[language] = {};
+    // Iterate over the categories: "msg", "cmd", "terms", "custom"
+    const categories = ["msg", "cmd", "terms", "custom"];
+    for (const category of categories) {
+        const translations = old_JSON[category];
+        if (category === "custom") {
+            for (const lang in translations) {
+                const languageObj = translations[lang];
+                for (const item in languageObj) {
+                    const translation = languageObj[item];
+                    if (item != translation) {
+                        delete languageObj[item];
+                    }
                 }
-                matchingKeys[language][key] = value;
+                // If the language has no data left, delete the language
+                if (Object.keys(languageObj).length === 0) {
+                    delete translations[lang];
+                }
             }
-        });
-    });
-    return Object.assign(Object.assign({}, result), { custom: Object.assign({}, matchingKeys) });
+        }
+        else {
+            for (const key in translations) {
+                const translationsObj = translations[key];
+                for (const lang in translationsObj) {
+                    const value = translationsObj[lang];
+                    if (value !== key) {
+                        delete translationsObj[lang];
+                    }
+                }
+                // If all translations have been removed, delete the entire section
+                if (Object.keys(translationsObj).length === 0) {
+                    delete translations[key];
+                }
+            }
+        }
+    }
+    return old_JSON;
 };
 exports.NotTranslated = NotTranslated;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//

@@ -56,99 +56,61 @@ const GeneralTranslated = (folder_path: string, matching_files: string[], langua
 //        An array of the languages to check for                                    //
 // Output: A JSON object containing untranslated objects                            //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const NotTranslated = (languages: string[]) => {
+export const NotTranslated = () => {
     // Get the JSON that's already been translated
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
 
-    const { msg, cmd, terms, custom } = old_JSON;
-    const not_custom_data: any = { msg, cmd, terms };
-    const custom_data: any = { custom };
+    // Iterate over the categories: "msg", "cmd", "terms", "custom"
+    const categories = ["msg", "cmd", "terms", "custom"];
+    for (const category of categories) {
 
-    const result: Record<string, any> = {};
+        const translations = old_JSON[category];
 
-    // Iterate over msg category
-    for (const key in msg) {
-        let includeKey = true;
-        const translations: Record<string, string> = {};
+        if (category === "custom") {
+            for (const lang in translations) {
+                const languageObj = translations[lang];
 
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (msg[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = msg[key][lang];
-        }
+                for (const item in languageObj) {
+                    const translation = languageObj[item];
 
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.msg[key] = translations;
-        }
-    }
-
-    // Iterate over cmd category
-    for (const key in cmd) {
-        let includeKey = true;
-        const translations: Record<string, string> = {};
-
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (cmd[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = cmd[key][lang];
-        }
-
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.cmd[key] = translations;
-        }
-    }
-
-    // Iterate over terms category
-    for (const key in terms) {
-        let includeKey = true;
-        const translations: Record<string, string> = {};
-
-        // Check for translations in the specified languages
-        for (const lang of languages) {
-            if (terms[key][lang] !== key) {
-                includeKey = false;
-                break;
-            }
-            translations[lang] = terms[key][lang];
-        }
-
-        // Include the key in the result if translations match
-        if (includeKey) {
-            result.terms[key] = translations;
-        }
-    }
-
-    return result;
-
-
-
-
-
-
-    const matchingKeys: any = {};
-
-    languages.forEach((language) => {
-        const translations = custom_data.custom[language];
-        Object.entries(translations).forEach(([key, value]) => {
-            if (key === value) {
-                if (!matchingKeys.hasOwnProperty(language)) {
-                    matchingKeys[language] = {};
+                    if (item != translation) {
+                        delete languageObj[item];
+                    }
                 }
-                matchingKeys[language][key] = value;
-            }
-        });
-    });
 
-    return { ...result, custom: { ...matchingKeys } };
+                // If the language has no data left, delete the language
+                if (Object.keys(languageObj).length === 0) {
+                    delete translations[lang];
+                }
+            }
+        }
+
+        else {
+            for (const key in translations) {
+                const translationsObj = translations[key];
+
+                for (const lang in translationsObj) {
+                    const value = translationsObj[lang];
+
+                    if (value !== key) {
+                        delete translationsObj[lang];
+                    }
+                }
+
+                // If all translations have been removed, delete the entire section
+                if (Object.keys(translationsObj).length === 0) {
+                    delete translations[key];
+                }
+            }
+        }
+
+    }
+
+    return old_JSON;
 };
+
+
+
 
 
 
