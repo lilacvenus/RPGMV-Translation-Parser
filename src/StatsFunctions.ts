@@ -1,6 +1,6 @@
 import { ScrapeAll } from './ScrapeFunctions';
-import { Translate, TranslateAll } from './TranslateFunctions';
-import { readFileSync, writeFile } from 'fs';
+import { TranslateAll } from './TranslateFunctions';
+import { readFileSync } from 'fs';
 const output_folder: string = "./output/";
 
 // TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
@@ -64,6 +64,9 @@ export const NotTranslated = () => {
     return old_JSON;
 };
 
+export const OverTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+};
+
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //
@@ -72,14 +75,28 @@ export const UnderTranslated = (folder_path: string, matching_files: string[], l
     const scraped_data = ScrapeAll(folder_path, matching_files);
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
-    const categories = ['msg', 'cmd', 'terms'];
     const output_JSON: Record<string, any> = {};
+
+    const categories = ["msg", "cmd", "terms", "custom"];
+    for (const category of categories) {
+
+        const translations = old_JSON[category];
+
+        if (category === "custom") {
+            for (const lang in translations) {
+                const languageObj = translations[lang];
+                // see if the key exists in the new JSON for the language, if not, add it to the output JSON
+            }
+        }
+
+        else {
+            for (const key in translations) {
+                // see if the key exists in the new JSON, if not, add it to the output JSON
+            }
+        }
+
+    }
+
+    return old_JSON;
 };
 
-export const OverTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
-    const scraped_data = ScrapeAll(folder_path, matching_files);
-    const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
-    const categories = ['msg', 'cmd', 'terms'];
-    const output_JSON: Record<string, any> = {};
-};
