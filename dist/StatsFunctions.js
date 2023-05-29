@@ -65,16 +65,19 @@ const UnderTranslated = (folder_path, matching_files, languages) => {
     const output_JSON = {};
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
-        const translations = old_JSON[category];
         if (category === "custom") {
-            for (const lang in translations) {
-                const languageObj = translations[lang];
-                // see if the key exists in the new JSON for the language, if not, add it to the output JSON
+            for (const lang in new_JSON[category]) {
+                const itemsInLang = new_JSON[category][lang];
+                const keysInLang = Object.keys(itemsInLang);
+                for (const key of keysInLang) {
+                    // if key is not in old_JSON[category][lang], add it to output_JSON
+                }
             }
         }
         else {
-            for (const key in translations) {
-                // see if the key exists in the new JSON, if not, add it to the output JSON
+            for (const key in new_JSON[category]) {
+                console.log(key);
+                // if key is not in old_JSON[category], add it to output_JSON
             }
         }
     }
