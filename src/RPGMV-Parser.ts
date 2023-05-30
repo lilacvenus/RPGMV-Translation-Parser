@@ -16,12 +16,10 @@ global_JSON = UnderTranslated(mapfile_folder, matching_files, languages);
 // const scraped_data = ScrapeAll(mapfile_folder, matching_files);
 // global_JSON = TranslateAll(languages, scraped_data);
 
-// let test_JSON = NotTranslated();
-// console.log(test_JSON);
 
 writeFile(output_folder + 'UnderTranslated.json', JSON.stringify(global_JSON), (err) => {
     if (err) throw err;
-    console.log('Wowie!');
+    console.log('UnderTranslated.json written to file!');
 });
 
 // writeFile(output_folder + 'Translations.json', JSON.stringify(global_JSON), (err) => {

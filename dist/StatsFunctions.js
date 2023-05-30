@@ -59,6 +59,7 @@ exports.OverTranslated = OverTranslated;
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const UnderTranslated = (folder_path, matching_files, languages) => {
+    var _a, _b, _c, _d;
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
@@ -66,22 +67,25 @@ const UnderTranslated = (folder_path, matching_files, languages) => {
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
         if (category === "custom") {
-            for (const lang in new_JSON[category]) {
-                const itemsInLang = new_JSON[category][lang];
-                const keysInLang = Object.keys(itemsInLang);
-                for (const key of keysInLang) {
-                    // if key is not in old_JSON[category][lang], add it to output_JSON
+            for (const lang in old_JSON[category]) { // For each language in the custom category
+                const keysInLang = Object.keys(new_JSON[category][lang]); // Array of keys in the new JSON for this language
+                for (const key of keysInLang) { // For each key in this language
+                    if (typeof ((_b = (_a = old_JSON[category]) === null || _a === void 0 ? void 0 : _a[lang]) === null || _b === void 0 ? void 0 : _b[key]) === 'undefined') { // If the key is not in the old JSON
+                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
+                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
+                        output_JSON[category][lang][key] = (_d = (_c = new_JSON[category]) === null || _c === void 0 ? void 0 : _c[lang]) === null || _d === void 0 ? void 0 : _d[key]; // Add the key to the output JSON
+                    }
                 }
             }
         }
         else {
             for (const key in new_JSON[category]) {
-                console.log(key);
+                // console.log(key);
                 // if key is not in old_JSON[category], add it to output_JSON
             }
         }
     }
-    return old_JSON;
+    return output_JSON;
 };
 exports.UnderTranslated = UnderTranslated;
 //# sourceMappingURL=StatsFunctions.js.map

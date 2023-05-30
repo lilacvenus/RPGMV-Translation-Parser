@@ -79,27 +79,30 @@ export const UnderTranslated = (folder_path: string, matching_files: string[], l
 
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
-
         if (category === "custom") {
-            for (const lang in new_JSON[category]) {
-                const itemsInLang = new_JSON[category][lang];
-                const keysInLang = Object.keys(itemsInLang);
+            for (const lang in old_JSON[category]) { // For each language in the custom category
+                const keysInLang = Object.keys(new_JSON[category][lang]); // Array of keys in the new JSON for this language
 
-                for (const key of keysInLang) {
-                    // if key is not in old_JSON[category][lang], add it to output_JSON
+                for (const key of keysInLang) { // For each key in this language
+                    if (typeof old_JSON[category]?.[lang]?.[key] === 'undefined') { // If the key is not in the old JSON
+                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
+                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
+                        output_JSON[category][lang][key] = new_JSON[category]?.[lang]?.[key]; // Add the key to the output JSON
+                    }
                 }
             }
         }
 
+
         else {
             for (const key in new_JSON[category]) {
-                console.log(key);
+                // console.log(key);
                 // if key is not in old_JSON[category], add it to output_JSON
             }
         }
 
     }
 
-    return old_JSON;
+    return output_JSON;
 };
 
