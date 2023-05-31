@@ -91,13 +91,24 @@ export const UnderTranslated = (folder_path: string, matching_files: string[], l
                     }
                 }
             }
+
+            for (const lang in new_JSON[category]) { 
+                const keysInLang = Object.keys(old_JSON[category][lang]); 
+
+                for (const key of keysInLang) { // For each key in this language
+                    if (typeof new_JSON[category]?.[lang]?.[key] === 'undefined') { 
+                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
+                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
+                        output_JSON[category][lang][key] = old_JSON[category]?.[lang]?.[key]; // Add the key to the output JSON
+                    }
+                }
+            }
         }
 
 
         else {
             for (const key in new_JSON[category]) {
-                // console.log(key);
-                // if key is not in old_JSON[category], add it to output_JSON
+                // TODO
             }
         }
 

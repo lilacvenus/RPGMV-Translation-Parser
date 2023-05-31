@@ -59,7 +59,7 @@ exports.OverTranslated = OverTranslated;
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 const UnderTranslated = (folder_path, matching_files, languages) => {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     const scraped_data = (0, ScrapeFunctions_1.ScrapeAll)(folder_path, matching_files);
     const new_JSON = (0, TranslateFunctions_1.TranslateAll)(languages, scraped_data);
     const old_JSON = JSON.parse((0, fs_1.readFileSync)(output_folder + 'Translations.json', 'utf8'));
@@ -77,11 +77,20 @@ const UnderTranslated = (folder_path, matching_files, languages) => {
                     }
                 }
             }
+            for (const lang in new_JSON[category]) {
+                const keysInLang = Object.keys(old_JSON[category][lang]);
+                for (const key of keysInLang) { // For each key in this language
+                    if (typeof ((_f = (_e = new_JSON[category]) === null || _e === void 0 ? void 0 : _e[lang]) === null || _f === void 0 ? void 0 : _f[key]) === 'undefined') {
+                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
+                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
+                        output_JSON[category][lang][key] = (_h = (_g = old_JSON[category]) === null || _g === void 0 ? void 0 : _g[lang]) === null || _h === void 0 ? void 0 : _h[key]; // Add the key to the output JSON
+                    }
+                }
+            }
         }
         else {
             for (const key in new_JSON[category]) {
-                // console.log(key);
-                // if key is not in old_JSON[category], add it to output_JSON
+                // TODO
             }
         }
     }
