@@ -1,9 +1,55 @@
 import { ScrapeAll } from './ScrapeFunctions';
 import { TranslateAll } from './TranslateFunctions';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync} from 'fs';
 const output_folder: string = "./output/";
 
 // TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
+
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Locates missing or excess translations and outputs them to a file for review     //
+// Input: Path to map000 files, array of all MAP000.json files, array of languages  //
+// Output: A JSON object containing missing/excess translations based on mode       //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+export const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
+    const scraped_data = ScrapeAll(folder_path, matching_files);
+    const new_JSON = TranslateAll(languages, scraped_data);
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
+    const output_JSON: Record<string, any> = {};
+
+    const categories = ["msg", "cmd", "terms", "custom"];
+    for (const category of categories) {
+
+        const target_JSON = mode === 'under' ? old_JSON[category] : new_JSON[category];
+        const compare_JSON = mode === 'under' ? new_JSON[category] : old_JSON[category];
+
+        if (category === "custom") {
+
+            for (const lang in target_JSON) {
+                const keysInLang = Object.keys(compare_JSON[lang]);
+
+                for (const key of keysInLang) {
+                    if (typeof target_JSON[lang]?.[key] === 'undefined') {
+                        output_JSON[category] = output_JSON[category] || {};
+                        output_JSON[category][lang] = output_JSON[category][lang] || {};
+                        output_JSON[category][lang][key] = compare_JSON[lang]?.[key];
+                    }
+                }
+            }
+        }
+
+        else {
+            for (const key in target_JSON) {
+                if (typeof compare_JSON[key] === 'undefined') {
+                    output_JSON[category] = output_JSON[category] || {};
+                    output_JSON[category][key] = target_JSON[key];
+                }
+            }
+        }
+    };
+
+    return output_JSON;
+
+};
 
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
@@ -64,47 +110,14 @@ export const NotTranslated = () => {
     return old_JSON;
 };
 
-export const OverTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
-};
-
-
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const UnderTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
-    const scraped_data = ScrapeAll(folder_path, matching_files);
-    const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
-    const output_JSON: Record<string, any> = {};
 
-    const categories = ["msg", "cmd", "terms", "custom"];
-    for (const category of categories) {
-        const target_JSON = mode === 'under' ? old_JSON[category] : new_JSON[category];
-        const compare_JSON = mode === 'under' ? new_JSON[category] : old_JSON[category];
-
-        if (category === "custom") {
-
-            for (const lang in target_JSON) {
-                const keysInLang = Object.keys(compare_JSON[lang]);
-
-                for (const key of keysInLang) {
-                    if (typeof target_JSON[lang]?.[key] === 'undefined') {
-                        output_JSON[category] = output_JSON[category] || {};
-                        output_JSON[category][lang] = output_JSON[category][lang] || {};
-                        output_JSON[category][lang][key] = compare_JSON[lang]?.[key];
-                    }
-                }
-            }
-        }
-
-        else {
-            for (const key in new_JSON[category]) {
-                // TODO
-            }
-        }
-    }
-
-    return output_JSON;
+export const OverTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+    return GeneralTranslated(folder_path, matching_files, languages, 'over');
 };
 
-
+export const UnderTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+    return GeneralTranslated(folder_path, matching_files, languages, 'under');
+};
