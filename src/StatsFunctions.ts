@@ -71,7 +71,7 @@ export const OverTranslated = (folder_path: string, matching_files: string[], la
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const UnderTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+export const UnderTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll(folder_path, matching_files);
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
@@ -79,41 +79,32 @@ export const UnderTranslated = (folder_path: string, matching_files: string[], l
 
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
+        const target_JSON = mode === 'under' ? old_JSON[category] : new_JSON[category];
+        const compare_JSON = mode === 'under' ? new_JSON[category] : old_JSON[category];
+
         if (category === "custom") {
-            for (const lang in old_JSON[category]) { // For each language in the custom category
-                const keysInLang = Object.keys(new_JSON[category][lang]); // Array of keys in the new JSON for this language
 
-                for (const key of keysInLang) { // For each key in this language
-                    if (typeof old_JSON[category]?.[lang]?.[key] === 'undefined') { // If the key is not in the old JSON
-                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
-                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
-                        output_JSON[category][lang][key] = new_JSON[category]?.[lang]?.[key]; // Add the key to the output JSON
-                    }
-                }
-            }
+            for (const lang in target_JSON) {
+                const keysInLang = Object.keys(compare_JSON[lang]);
 
-            for (const lang in new_JSON[category]) { 
-                const keysInLang = Object.keys(old_JSON[category][lang]); 
-
-                for (const key of keysInLang) { // For each key in this language
-                    if (typeof new_JSON[category]?.[lang]?.[key] === 'undefined') { 
-                        output_JSON[category] = output_JSON[category] || {}; // Create the category if it doesn't exist
-                        output_JSON[category][lang] = output_JSON[category][lang] || {}; // Create the language if it doesn't exist
-                        output_JSON[category][lang][key] = old_JSON[category]?.[lang]?.[key]; // Add the key to the output JSON
+                for (const key of keysInLang) {
+                    if (typeof target_JSON[lang]?.[key] === 'undefined') {
+                        output_JSON[category] = output_JSON[category] || {};
+                        output_JSON[category][lang] = output_JSON[category][lang] || {};
+                        output_JSON[category][lang][key] = compare_JSON[lang]?.[key];
                     }
                 }
             }
         }
-
 
         else {
             for (const key in new_JSON[category]) {
                 // TODO
             }
         }
-
     }
 
     return output_JSON;
 };
+
 

@@ -10,7 +10,7 @@ const matching_files = readdirSync(mapfile_folder).filter(file => file.match(/^M
 
 let global_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-global_JSON = UnderTranslated(mapfile_folder, matching_files, languages);
+global_JSON = UnderTranslated(mapfile_folder, matching_files, languages, 'over');
 // OverTranslated(mapfile_folder, matching_files, languages);
 
 // const scraped_data = ScrapeAll(mapfile_folder, matching_files);
