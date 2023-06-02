@@ -1,7 +1,7 @@
 import { OutputTranslations, OutputNotTranslated, OutputOverTranslated, OutputUnderTranslated } from './OutputFunctions';
 import { ScrapeAll } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
-import { readdirSync} from 'fs';
+import { readdirSync } from 'fs';
 import dotnev from 'dotenv';
 dotnev.config();
 
@@ -16,7 +16,7 @@ async function translateAPI(text: string, target_lang: string): Promise<string> 
     const response = await fetch('https://api-free.deepl.com/v2/translate', {
         method: 'POST',
         headers: {
-            'Authorization': API_KEY??"",
+            'Authorization': API_KEY ?? "",
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': encoded_text.length.toString()
         },
@@ -32,8 +32,7 @@ async function translateAPI(text: string, target_lang: string): Promise<string> 
 
 }
 
-// TODO : Split leading and trailing spaces from the text to translate
-function replacePatterns(step0: string): string[] {
+function splitDialogue(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split("\n"));                          // Split on "\n"
     const step3 = step2.flatMap(item => item.split(/(\\>)/));                       // Split on "\\>"
@@ -50,23 +49,45 @@ function replacePatterns(step0: string): string[] {
     const step14 = step13.flatMap(item => item.split(/(\\msgposy\[\d+\])/));        // Split on "\\msgposy[455]"
     const step15 = step14.flatMap(item => item.split(/(\\autoevent\[\d+\])/));      // Split on "\\autoevent[1]"
     const step16 = step15.flatMap(item => item.split(/(\\msgwidth\[[^\]]+\])/));    // Split on "\\msgwidth[auto]"
-    
-    return step16.filter(item => item.trim().length > 0);
+
+    const step17 = step16.flatMap(item => {
+        const trimmedItem = item.trim();
+        const leadingSpaces = (item.match(/^\s*/) ?? [""])[0];
+        const trailingSpaces = (item.match(/\s*$/) ?? [""])[0];
+
+        const result = [];
+        if (leadingSpaces.length > 0) {
+            result.push(leadingSpaces);
+        }
+        if (trimmedItem.length > 0) {
+            result.push(trimmedItem);
+        }
+        if (trailingSpaces.length > 0) {
+            result.push(trailingSpaces);
+        }
+
+        return result;
+    });
+
+    return step17.filter(item => item.length > 0);
 }
 
 let scraped_data = ScrapeAll(mapfile_folder, matching_files);
 let output_JSON = TranslateAll(languages, scraped_data);
 
+let elemArr = splitDialogue("\\autoevent[0]\\ntc<Elise>\\fn<Gabriola>Oh Cerio.\\| I hope you haven't\nbeen drinking too much because of all that's happening\\..\\..\\..");
+console.log(elemArr);
+
 let condition = 1;
 for (let key in output_JSON.msg) {
     condition++;
     if (output_JSON.msg.hasOwnProperty(key)) {
-        let array = replacePatterns(key);
+        let array = splitDialogue(key);
         array.forEach(async element => {
             if (element[0] !== "\\") {
                 if (element.length > 1) {
-                    let coolVar = await translateAPI(element, "FR");
-                    console.log(coolVar);
+                    //let coolVar = await translateAPI(element, "FR");
+                    console.log(element);
                 }
             }
         });

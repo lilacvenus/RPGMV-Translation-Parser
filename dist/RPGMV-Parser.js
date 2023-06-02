@@ -24,8 +24,7 @@ async function translateAPI(text, target_lang) {
     const json = await response.json();
     return json.translations[0].text;
 }
-// TODO : Split leading and trailing spaces from the text to translate
-function replacePatterns(step0) {
+function splitDialogue(step0) {
     const step1 = step0.split(/(\\C\[\d+\])/); // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split("\n")); // Split on "\n"
     const step3 = step2.flatMap(item => item.split(/(\\>)/)); // Split on "\\>"
@@ -42,20 +41,38 @@ function replacePatterns(step0) {
     const step14 = step13.flatMap(item => item.split(/(\\msgposy\[\d+\])/)); // Split on "\\msgposy[455]"
     const step15 = step14.flatMap(item => item.split(/(\\autoevent\[\d+\])/)); // Split on "\\autoevent[1]"
     const step16 = step15.flatMap(item => item.split(/(\\msgwidth\[[^\]]+\])/)); // Split on "\\msgwidth[auto]"
-    return step16.filter(item => item.trim().length > 0);
+    const step17 = step16.flatMap(item => {
+        const trimmedItem = item.trim();
+        const leadingSpaces = (item.match(/^\s*/) ?? [""])[0];
+        const trailingSpaces = (item.match(/\s*$/) ?? [""])[0];
+        const result = [];
+        if (leadingSpaces.length > 0) {
+            result.push(leadingSpaces);
+        }
+        if (trimmedItem.length > 0) {
+            result.push(trimmedItem);
+        }
+        if (trailingSpaces.length > 0) {
+            result.push(trailingSpaces);
+        }
+        return result;
+    });
+    return step17.filter(item => item.length > 0);
 }
 let scraped_data = ScrapeAll(mapfile_folder, matching_files);
 let output_JSON = TranslateAll(languages, scraped_data);
+let elemArr = splitDialogue("\\autoevent[0]\\ntc<Elise>\\fn<Gabriola>Oh Cerio.\\| I hope you haven't\nbeen drinking too much because of all that's happening\\..\\..\\..");
+console.log(elemArr);
 let condition = 1;
 for (let key in output_JSON.msg) {
     condition++;
     if (output_JSON.msg.hasOwnProperty(key)) {
-        let array = replacePatterns(key);
+        let array = splitDialogue(key);
         array.forEach(async (element) => {
             if (element[0] !== "\\") {
                 if (element.length > 1) {
-                    let coolVar = await translateAPI(element, "FR");
-                    console.log(coolVar);
+                    //let coolVar = await translateAPI(element, "FR");
+                    console.log(element);
                 }
             }
         });
