@@ -33,8 +33,9 @@ async function translateAPI(text: string, target_lang: string): Promise<string> 
 }
 
 function splitDialogue(step0: string): string[] {
+    console.log("Step 0: " + JSON.stringify(step0));
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
-    const step2 = step1.flatMap(item => item.split("\n"));                          // Split on "\n"
+    const step2 = step1.flatMap(item => item.split(/\\n/));                          // Split on "\n"
     const step3 = step2.flatMap(item => item.split(/(\\>)/));                       // Split on "\\>"
     const step4 = step3.flatMap(item => item.split("\\."));                         // Split on "\\."
     const step5 = step4.flatMap(item => item.split(/(\\fb)/));                      // Split on "\\fb"
@@ -69,33 +70,63 @@ function splitDialogue(step0: string): string[] {
         return result;
     });
 
+    console.log("Step 17: " + JSON.stringify(step17));
     return step17.filter(item => item.length > 0);
 }
 
 let scraped_data = ScrapeAll(mapfile_folder, matching_files);
 let output_JSON = TranslateAll(languages, scraped_data);
 
-let elemArr = splitDialogue("\\autoevent[0]\\ntc<Elise>\\fn<Gabriola>Oh Cerio.\\| I hope you haven't\nbeen drinking too much because of all that's happening\\..\\..\\..");
-console.log(elemArr);
+const testString = "\\autoevent[7]\\m[Fleur]Yo!\\| I think it's time to blow this popsicle stand.\\|\nI see someone walking this way.";
+const testArray = splitDialogue(testString);
+testArray.forEach(async (element, index) => {
+    if (element[0] !== "\\" && element.length > 1) {
 
-let condition = 1;
-for (let key in output_JSON.msg) {
-    condition++;
-    if (output_JSON.msg.hasOwnProperty(key)) {
-        let array = splitDialogue(key);
-        array.forEach(async element => {
-            if (element[0] !== "\\") {
-                if (element.length > 1) {
-                    //let coolVar = await translateAPI(element, "FR");
-                    console.log(element);
-                }
-            }
+    }
+});
+
+console.log("Final String: " + JSON.stringify(testArray.join("")));
+const finalString = JSON.stringify(testArray.join(""));
+
+console.log("Test String: " + testString.length);
+console.log("Final String: " + finalString.length);
+
+const length = Math.max(testString.length, finalString.length);
+let differences = [];
+
+for (let i = 0; i < length; i++) {
+    if (testString[i] !== finalString[i]) {
+        differences.push({
+            index: i,
+            testChar: testString[i],
+            finalChar: finalString[i]
         });
     }
-    if (condition > 1) {
-        break;
-    }
 }
+
+if (differences.length === 0) {
+    console.log("Strings match!");
+} else {
+    console.log("Strings do not match!");
+    console.log("Differences:");
+    console.log(differences);
+}
+
+
+
+// for (let key in output_JSON.msg) {
+//     if (output_JSON.msg.hasOwnProperty(key)) {
+//         let array = splitDialogue(key);
+//         array.forEach(async (element, index) => {
+//             if (element[0] !== "\\") {
+//                 if (element.length > 1) {
+//                     //let coolVar = await translateAPI(element, "FR");
+//                     // console.log(element, index);
+//                 }
+//             }
+//         });
+//     }
+// }
 
 
 
