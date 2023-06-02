@@ -1,30 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScrapeMapNames = exports.ScrapeCommands = exports.ScrapeMessages = exports.ScrapeAll = void 0;
-const { readdirSync, readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  A simple function that combines all other functions into one command            //
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: A 2D array of all the scraped data                                      //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const ScrapeAll = (folder_path, matching_files) => {
+export const ScrapeAll = (folder_path, matching_files) => {
     let scraped_messages = [];
     let scraped_commands = [];
     let scraped_terms = [];
     let scraped_custom = [];
-    scraped_messages = (0, exports.ScrapeMessages)(folder_path, matching_files);
-    scraped_commands = (0, exports.ScrapeCommands)(folder_path, matching_files);
-    scraped_custom = (0, exports.ScrapeMapNames)(folder_path);
+    scraped_messages = ScrapeMessages(folder_path, matching_files);
+    scraped_commands = ScrapeCommands(folder_path, matching_files);
+    scraped_custom = ScrapeMapNames(folder_path);
     return [scraped_messages, scraped_commands, scraped_terms, scraped_custom];
 };
-exports.ScrapeAll = ScrapeAll;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Looks for items with the 401 code, which are the dialogue messages              //
 //  Concatenates them into a single string separated by \n for multi-line messages  //
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: An array of all the dialogue messages                                   //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const ScrapeMessages = (folder_path, matching_files) => {
+export const ScrapeMessages = (folder_path, matching_files) => {
     const concatMessages = (item, concatMessage) => {
         if (item.parameters && item.parameters.length > 0) {
             const parameter = item.parameters[0].trim();
@@ -65,13 +61,12 @@ const ScrapeMessages = (folder_path, matching_files) => {
     });
     return scraped_messages;
 };
-exports.ScrapeMessages = ScrapeMessages;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Looks for items with the 102 code, which are the selectable options             //
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: An array of all the dialogue options                                    //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const ScrapeCommands = (folder_path, matching_files) => {
+export const ScrapeCommands = (folder_path, matching_files) => {
     const scraped_commands = [];
     matching_files.forEach((file) => {
         const fileJson = JSON.parse(readFileSync(`${folder_path}/${file}`, 'utf8'));
@@ -95,13 +90,12 @@ const ScrapeCommands = (folder_path, matching_files) => {
     });
     return scraped_commands;
 };
-exports.ScrapeCommands = ScrapeCommands;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Scrapes MapInfos.JSON folder which contains all level names in the game         //
 //  Input: The folder that contains the MapInfos.json file                          //
 //  Output: An array of all the map names                                           //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const ScrapeMapNames = (folder_path) => {
+export const ScrapeMapNames = (folder_path) => {
     try {
         const map_data = JSON.parse(readFileSync(`${folder_path}/MapInfos.json`, 'utf8'));
         return Array.isArray(map_data) ? map_data.filter(item => item && typeof item === 'object' && 'name' in item).map(item => item.name) : [];
@@ -111,5 +105,4 @@ const ScrapeMapNames = (folder_path) => {
         return [];
     }
 };
-exports.ScrapeMapNames = ScrapeMapNames;
 //# sourceMappingURL=ScrapeFunctions.js.map

@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync } = require('fs');
+import { readFileSync } from 'fs';
 
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//

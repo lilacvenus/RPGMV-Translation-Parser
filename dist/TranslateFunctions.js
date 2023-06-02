@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Translate = exports.TranslateAll = void 0;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Converts all arrays to the JSON format for use by the translation plugin        //
 //  Input: Array of strings for languages,                                          //
 //         Array of string arrays [[msg], [cmd], [terms], [custom]]                 //
 //  Output: JSON of blank translations for all categories                           //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const TranslateAll = (languages, scraped_data) => {
+export const TranslateAll = (languages, scraped_data) => {
     let JSON = { msg: {}, cmd: {}, terms: {}, custom: {} };
     const category = ["msg", "cmd", "terms", "custom"];
     scraped_data.forEach((current_array, index) => {
@@ -31,7 +28,6 @@ const TranslateAll = (languages, scraped_data) => {
     });
     return JSON;
 };
-exports.TranslateAll = TranslateAll;
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Converts an array to the JSON format for use by the translation plugin          //
 //  Input: Array of strings for all the languages you want,                         //
@@ -40,8 +36,8 @@ exports.TranslateAll = TranslateAll;
 //         The existing JSON so it doesn't overwrite old data,                      //
 //  Output: JSON of previous translations + chosen translation category             //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const Translate = (languages, content_array, category, existingJSON) => {
-    let newJSON = Object.assign({}, existingJSON);
+export const Translate = (languages, content_array, category, existingJSON) => {
+    let newJSON = { ...existingJSON };
     if (category === "custom") {
         const translations = {};
         content_array.forEach((new_translation) => {
@@ -61,5 +57,4 @@ const Translate = (languages, content_array, category, existingJSON) => {
     }
     return newJSON;
 };
-exports.Translate = Translate;
 //# sourceMappingURL=TranslateFunctions.js.map
