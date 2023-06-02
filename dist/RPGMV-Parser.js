@@ -18,9 +18,13 @@ async function translateAPI(text, target_lang) {
         },
         body: encoded_text
     });
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const json = await response.json();
     return json.translations[0].text;
 }
+// TODO : Split leading and trailing spaces from the text to translate
 function replacePatterns(step0) {
     const step1 = step0.split(/(\\C\[\d+\])/); // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split("\n")); // Split on "\n"

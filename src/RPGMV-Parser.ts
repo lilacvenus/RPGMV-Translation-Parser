@@ -1,8 +1,7 @@
-import { strictEqual } from 'assert';
 import { OutputTranslations, OutputNotTranslated, OutputOverTranslated, OutputUnderTranslated } from './OutputFunctions';
 import { ScrapeAll } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
-import { readdirSync, readFileSync} from 'fs';
+import { readdirSync} from 'fs';
 import dotnev from 'dotenv';
 dotnev.config();
 
@@ -24,11 +23,16 @@ async function translateAPI(text: string, target_lang: string): Promise<string> 
         body: encoded_text
     });
 
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const json = await response.json();
     return json.translations[0].text;
 
 }
 
+// TODO : Split leading and trailing spaces from the text to translate
 function replacePatterns(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split("\n"));                          // Split on "\n"
