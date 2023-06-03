@@ -4,8 +4,11 @@ const autofillCheckbox = document.getElementById('autofill-checkbox');
 const previousButton = document.getElementById('previous-button');
 const nextButton = document.getElementById('next-button');
 document.getElementById('copy-button').addEventListener('click', function () {
-    originalTextElement.select();
     navigator.clipboard.writeText(originalTextElement.value);
+});
+
+document.getElementById('copy-button-trans').addEventListener('click', function () {
+    navigator.clipboard.writeText(userTextElement.value);
 });
 
 let data = {

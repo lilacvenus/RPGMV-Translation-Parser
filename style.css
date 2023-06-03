@@ -28,20 +28,10 @@ body {
     margin-top: 25vh;
 }
 
-.text-input-container {
-    position: relative;
-}
-
 .text-input {
     margin-bottom: 10px;
     width: 300px;
     padding: 5px;
-}
-
-#copy-button {
-    position: absolute;
-    right: -80px;
-    top: 2px;
 }
 
 .block-selection {
