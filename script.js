@@ -49,6 +49,8 @@ function saveData() {
 }
 
 previousButton.addEventListener('click', function () {
+    saveData();
+
     if (currentIndex === 0) {
         currentIndex = keys.length - 1;
     } else {
@@ -58,6 +60,8 @@ previousButton.addEventListener('click', function () {
 });
 
 nextButton.addEventListener('click', function () {
+    saveData();
+    
     if (currentIndex === keys.length - 1) {
         currentIndex = 0;
     } else {
