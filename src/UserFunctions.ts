@@ -1,6 +1,6 @@
 import dotnev from 'dotenv';
-import { ScrapeAll } from './ScrapeFunctions.js';
-import { TranslateAll } from './TranslateFunctions.js';
+import { ScrapeAll, ScrapeMessages } from './ScrapeFunctions.js';
+import { TranslateAll, Translate } from './TranslateFunctions.js';
 
 dotnev.config();
 const API_KEY = process.env.API_KEY;
@@ -84,8 +84,10 @@ export async function translateAPI(text: string, target_lang: string): Promise<s
 //  Output: false if a string doesn't match, true if they all pass                  //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export function IsDisassembleValid(mapfile_folder : string, matching_files : string[], languages : string[]): boolean {
-    let scraped_data = ScrapeAll(mapfile_folder, matching_files);
-    let output_JSON = TranslateAll(languages, scraped_data);
+    // let scraped_data = ScrapeAll(mapfile_folder, matching_files);
+    let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
+    // let output_JSON = TranslateAll(languages, scraped_data);
+    let output_JSON = Translate(languages, scraped_data, "msg");
     let mismatchCount = 0;
     let nonmatchingStrings = [];
 

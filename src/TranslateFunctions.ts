@@ -45,8 +45,9 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
 // TODO: Fix this function, might be broken if passing empty array?
-export const Translate = (languages: string[], content_array: string[], category: keyof Translations, existingJSON: Translations) => {
+export const Translate = (languages: string[], content_array: string[], category: keyof Translations, existingJSON?: Translations) => {
     let newJSON: Translations = { ...existingJSON };
+    newJSON[category] = newJSON[category] || {};
 
     if (category === "custom") {
         const translations: { [key: string]: string } = {};
