@@ -7,7 +7,7 @@ const API_KEY = process.env.API_KEY;
 
 export function splitDialogue(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
-    const step2 = step1.flatMap(item => item.split(/\\n/));                          // Split on "\n"
+    const step2 = step1.flatMap(item => item.split(/\\n/));                         // Split on "\n"
     const step3 = step2.flatMap(item => item.split(/(\\>)/));                       // Split on "\\>"
     const step4 = step3.flatMap(item => item.split("\\."));                         // Split on "\\."
     const step5 = step4.flatMap(item => item.split(/(\\fb)/));                      // Split on "\\fb"
