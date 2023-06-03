@@ -36,7 +36,6 @@ export const TranslateAll = (languages, scraped_data) => {
 //         The existing JSON so it doesn't overwrite old data,                      //
 //  Output: JSON of previous translations + chosen translation category             //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-// TODO: Fix this function, might be broken if passing empty array?
 export const Translate = (languages, content_array, category, existingJSON) => {
     let newJSON = { ...existingJSON };
     newJSON[category] = newJSON[category] || {};
