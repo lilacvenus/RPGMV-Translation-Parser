@@ -26,7 +26,6 @@ const createWindow = () => {
         width: 800,
         height: 600,
         icon: 'media/egg.ico',
-        frame: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }

@@ -2,18 +2,32 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    <title>RPGMV Translation Tool</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <div class="container">
+        <label for="original-text">Original Text:</label>
+        <div>
+            <input type="text" id="original-text" class="text-input" />
+            <button id="copy-button" class="button">Copy</button>
+        </div>
+
+        <label for="user-text">User-entered Text:</label>
+        <input type="text" id="user-text" class="text-input" />
+
+        <label for="autofill-checkbox">
+            <input type="checkbox" id="autofill-checkbox" /> Enable AI Autofill
+        </label>
+
+        <div class="button-container">
+            <button id="previous-button" class="button">Previous</button>
+            <button id="next-button" class="button">Next</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-<script src="./renderer.js"></script>
 
 </html>
