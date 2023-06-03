@@ -1,9 +1,8 @@
 import { OutputTranslations, OutputNotTranslated, OutputOverTranslated, OutputUnderTranslated } from './OutputFunctions';
 import { splitDialogue, translateAPI, IsDisassembleValid } from './UserFunctions.js';
-import { ScrapeAll } from './ScrapeFunctions.js';
-import { TranslateAll } from './TranslateFunctions.js';
+import { ScrapeMessages } from './ScrapeFunctions.js';
+import { Translate } from './TranslateFunctions.js';
 import { readdirSync } from 'fs';
-
 
 const languages: string[] = ["Français"];
 const mapfile_folder: string = "./MapFiles/";
@@ -13,12 +12,19 @@ const validDisassemble = IsDisassembleValid(mapfile_folder, matching_files, lang
 console.log(validDisassemble);
 
 
+
+
+
+
+// let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
+// let output_JSON = Translate(languages, scraped_data, "msg");
+
 // let array = splitDialogue(key);
-        // array.forEach(async (element, index) => {
-        //     if (element[0] !== "\\") {
-        //         if (element.length > 1) {
-        //             let coolVar = await translateAPI(element, "FR");
-        //             console.log(element, index);
-        //         }
-        //     }
-        // });
+// array.forEach(async (element, index) => {
+//         if (element[0] !== "\\") {
+//                 if (element.length > 1) {
+//                         let coolVar = await translateAPI(element, "FR");
+//                         console.log(element, index);
+//                 }
+//         }
+// });
