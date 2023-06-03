@@ -1,5 +1,17 @@
+:root {
+    --dark-gray: #111;
+    --dark-green: #3c7c5c;
+    --mint-green: #a1d6b8;
+    color: whitesmoke;
+}
+
 body {
-    background-color: darkolivegreen;
+    background-color: var(--dark-gray);
+    background-image: linear-gradient(45deg, transparent 20%, black 25%, transparent 25%),
+        linear-gradient(-45deg, transparent 20%, black 25%, transparent 25%),
+        linear-gradient(-45deg, transparent 75%, black 80%, transparent 0),
+        radial-gradient(rgb(31, 28, 28) 2px, transparent 0);
+    background-size: 30px 30px, 30px 30px;
 }
 
 .container {
@@ -9,17 +21,27 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: aquamarine;
-    border: 3px solid green;
+    background-color: var(--dark-green);
+    border: 5px solid whitesmoke;
     border-radius: 10px;
     margin: 0 auto;
     margin-top: 25vh;
+}
+
+.text-input-container {
+    position: relative;
 }
 
 .text-input {
     margin-bottom: 10px;
     width: 300px;
     padding: 5px;
+}
+
+#copy-button {
+    position: absolute;
+    right: -80px;
+    top: 2px;
 }
 
 .block-selection {
@@ -35,11 +57,11 @@ body {
     padding: 5px 20px;
     border: none;
     border-radius: 5px;
-    background-color: darkgreen;
-    color: white;
+    background-color: green;
+    color: whitesmoke;
 }
 
 .button:hover {
     cursor: pointer;
-    background-color: green;
+    background-color: var(--mint-green);
 }
