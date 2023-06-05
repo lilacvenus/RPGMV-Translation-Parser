@@ -1,4 +1,5 @@
 "use strict";
+const { ipcRenderer } = require('electron');
 const originalTextElement = document.getElementById('original-text');
 const userTextElement = document.getElementById('user-text');
 const autofillCheckbox = document.getElementById('autofill-checkbox');
@@ -28,18 +29,9 @@ document.getElementById('copy-button')?.addEventListener('click', function () {
 document.getElementById('copy-button-trans')?.addEventListener('click', function () {
     navigator.clipboard.writeText(userTextElement?.value);
 });
-loadButton?.addEventListener('click', () => {
-    dialog.showOpenDialog({ properties: ['openDirectory'] })
-        .then((result) => {
-        if (!result.canceled) {
-            const folderPath = result.filePaths[0];
-            console.log(folderPath);
-        }
-    })
-        .catch((err) => {
-        console.log(err);
-    });
-});
+function loadFile() {
+    ipcRenderer.send('load-file');
+}
 function updateTextFields(index) {
     console.log(index);
     console.log(typeof index);

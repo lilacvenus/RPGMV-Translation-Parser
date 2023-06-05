@@ -24,7 +24,8 @@
 //         }
 // });
 
-const { app, BrowserWindow, dialog, ipcMain} = require('electron')
+const electron = require('electron')
+const { app, BrowserWindow, dialog, ipcMain } = electron
 const path = require('path')
 
 const createWindow = () => {
@@ -33,7 +34,9 @@ const createWindow = () => {
         height: 1080,
         icon: 'media/egg.ico',
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
         }
     })
 
@@ -48,6 +51,20 @@ app.whenReady().then(() => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 })
+
+ipcMain.on('load-file', (event: any, arg: any) => {
+    dialog.showOpenDialog({ properties: ['openDirectory'] })
+        .then((result: any) => {
+            if (!result.canceled) {
+                const folderPath = result.filePaths[0];
+                console.log(folderPath);
+            }
+        })
+        .catch((err: any) => {
+            console.log(err);
+        });
+})
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
