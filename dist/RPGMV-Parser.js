@@ -19,7 +19,7 @@
 //                 }
 //         }
 // });
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
