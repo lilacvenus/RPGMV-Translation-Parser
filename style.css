@@ -12,11 +12,16 @@ body {
         linear-gradient(-45deg, transparent 75%, black 80%, transparent 0),
         radial-gradient(rgb(31, 28, 28) 2px, transparent 0);
     background-size: 30px 30px, 30px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
 }
 
 .container {
-    width: 50rem;
-    height: 30rem;
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,18 +29,19 @@ body {
     background-color: var(--dark-green);
     border: 5px solid whitesmoke;
     border-radius: 10px;
-    margin: 0 auto;
-    margin-top: 25vh;
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
+
+.container:last-child {
+    margin-bottom: 0;
+}
+
 
 .text-input {
     margin-bottom: 10px;
     width: 300px;
     padding: 5px;
-}
-
-.block-selection {
-    pointer-events: none;
 }
 
 .button-container {
@@ -44,7 +50,7 @@ body {
 
 .button {
     margin: 0 5px;
-    padding: 5px 20px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     background-color: green;

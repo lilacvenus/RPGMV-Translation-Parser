@@ -14,13 +14,13 @@ document.getElementById('copy-button-trans').addEventListener('click', function 
 let data = {
     "msg": {
         "Hello": {
-            "Français": "Hello"
+            "Français": ""
         },
         "Goodbye": {
-            "Français": "Goodbye"
+            "Français": ""
         },
         "Pesto Sauce": {
-            "Français": "Pesto Sauce"
+            "Français": ""
         }
     }
 };
@@ -36,8 +36,8 @@ function updateTextFields(index) {
     originalTextElement.value = originalText;
     userTextElement.value = transText;
 
-    if (isAutofillChecked && originalText === transText) {
-        userTextElement.value = transText.toUpperCase();
+    if (isAutofillChecked && transText === "") {
+        userTextElement.value = originalText.toUpperCase();
     }
 
     else {
