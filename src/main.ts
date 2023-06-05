@@ -24,13 +24,13 @@
 //         }
 // });
 
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain} = require('electron')
 const path = require('path')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1920,
+        height: 1080,
         icon: 'media/egg.ico',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')

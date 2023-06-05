@@ -2,7 +2,7 @@
   "name": "ts-dev",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/RPGMV-Parser.js",
+  "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
     "start": "electron ."
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/electron": "^1.6.10",
     "@types/node": "^18.16.1",
     "electron": "^25.0.1",
     "typescript": "^5.0.4"
