@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 
-
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  A simple function that combines all other functions into one command            //
 //  Input: The folder of map files and the list of MAP000 files                     //

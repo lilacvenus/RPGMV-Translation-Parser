@@ -69,13 +69,13 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                 }
                 catch (error) {
                     event.reply('game-title-reply', undefined);
-                    console.log(error);
+                    console.log(`Error loading game title: ${error}`);
                 }
 
             }
         })
         .catch((err: Error) => {
-            console.log(err);
+            console.log(`Error loading file: ${err}`);
         });
 })
 

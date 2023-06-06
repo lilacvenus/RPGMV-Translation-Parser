@@ -78,4 +78,4 @@ autofillCheckbox.addEventListener('change', function () {
     updateTextFields(currentIndex);
 });
 updateTextFields(currentIndex);
-//# sourceMappingURL=script.js.map
+//# sourceMappingURL=renderer.js.map

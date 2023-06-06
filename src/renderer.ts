@@ -79,26 +79,24 @@ function saveData() {
     data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
 
-previousButton?.addEventListener('click', function () {
+function handleClick(isPrevious : boolean) {
     saveData();
 
-    if (currentIndex === 0) {
-        currentIndex = keys.length - 1;
+    if (isPrevious) {
+        currentIndex = (currentIndex === 0) ? keys.length - 1 : currentIndex - 1;
     } else {
-        currentIndex--;
+        currentIndex = (currentIndex === keys.length - 1) ? 0 : currentIndex + 1;
     }
+
     updateTextFields(currentIndex);
+}
+
+previousButton?.addEventListener('click', function () {
+    handleClick(true);
 });
 
 nextButton?.addEventListener('click', function () {
-    saveData();
-
-    if (currentIndex === keys.length - 1) {
-        currentIndex = 0;
-    } else {
-        currentIndex++;
-    }
-    updateTextFields(currentIndex);
+    handleClick(false);
 });
 
 autofillCheckbox.addEventListener('change', function () {
