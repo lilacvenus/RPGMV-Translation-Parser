@@ -72,7 +72,7 @@ export async function translateAPI(text, target_lang) {
 //  Output: false if a string doesn't match, true if they all pass                  //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export function IsDisassembleValid(mapfile_folder, matching_files, languages) {
-    let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
+    let scraped_data = ScrapeMessages();
     let output_JSON = Translate(languages, scraped_data, "msg");
     let mismatchCount = 0;
     let nonmatchingStrings = [];

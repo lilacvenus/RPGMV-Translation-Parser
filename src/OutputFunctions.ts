@@ -14,7 +14,7 @@ const WriteToFile = (file_name: string, data: any) => {
 export const OutputTranslations = (mapfile_folder: string, matching_files: string[], languages: string[]) =>{
     let output_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-    const scraped_data = ScrapeAll(mapfile_folder, matching_files);
+    const scraped_data = ScrapeAll();
     output_JSON = TranslateAll(languages, scraped_data);
 
     WriteToFile('Translations.json', output_JSON);

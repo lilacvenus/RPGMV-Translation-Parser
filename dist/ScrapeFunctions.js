@@ -1,18 +1,16 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
+let project_path = "C:/Users/Venus/Desktop/Caketropolis";
+const getMatchingFiles = () => {
+    return readdirSync(`${project_path}/data/`).filter(file => file.match(/^Map\d{3}\.json$/));
+};
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  A simple function that combines all other functions into one command            //
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: A 2D array of all the scraped data                                      //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const ScrapeAll = (folder_path, matching_files) => {
-    let scraped_messages = [];
-    let scraped_commands = [];
+export const ScrapeAll = () => {
     let scraped_terms = [];
-    let scraped_custom = [];
-    scraped_messages = ScrapeMessages(folder_path, matching_files);
-    scraped_commands = ScrapeCommands(folder_path, matching_files);
-    scraped_custom = ScrapeMapNames(folder_path);
-    return [scraped_messages, scraped_commands, scraped_terms, scraped_custom];
+    return [ScrapeMessages(), ScrapeCommands(), scraped_terms, ScrapeMapNames()];
 };
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //  Looks for items with the 401 code, which are the dialogue messages              //
@@ -20,7 +18,7 @@ export const ScrapeAll = (folder_path, matching_files) => {
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: An array of all the dialogue messages                                   //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const ScrapeMessages = (folder_path, matching_files) => {
+export const ScrapeMessages = () => {
     const concatMessages = (item, concatMessage) => {
         if (item.parameters && item.parameters.length > 0) {
             const parameter = item.parameters[0].trim();
@@ -34,8 +32,9 @@ export const ScrapeMessages = (folder_path, matching_files) => {
         return concatMessage;
     };
     const scraped_messages = [];
+    const matching_files = getMatchingFiles();
     matching_files.forEach((file) => {
-        const fileJson = JSON.parse(readFileSync(`${folder_path}/${file}`, 'utf8'));
+        const fileJson = JSON.parse(readFileSync(`${project_path}/data/${file}`, 'utf8'));
         let concat_message = "";
         fileJson.events.forEach((event) => {
             if (event && event.pages) {
@@ -66,10 +65,11 @@ export const ScrapeMessages = (folder_path, matching_files) => {
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: An array of all the dialogue options                                    //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const ScrapeCommands = (folder_path, matching_files) => {
+export const ScrapeCommands = () => {
     const scraped_commands = [];
+    const matching_files = getMatchingFiles();
     matching_files.forEach((file) => {
-        const fileJson = JSON.parse(readFileSync(`${folder_path}/${file}`, 'utf8'));
+        const fileJson = JSON.parse(readFileSync(`${project_path}/data/${file}`, 'utf8'));
         fileJson.events.forEach((event) => {
             if (event && event.pages) {
                 event.pages.forEach((page) => {
@@ -95,9 +95,9 @@ export const ScrapeCommands = (folder_path, matching_files) => {
 //  Input: The folder that contains the MapInfos.json file                          //
 //  Output: An array of all the map names                                           //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const ScrapeMapNames = (folder_path) => {
+export const ScrapeMapNames = () => {
     try {
-        const map_data = JSON.parse(readFileSync(`${folder_path}/MapInfos.json`, 'utf8'));
+        const map_data = JSON.parse(readFileSync(`${project_path}/data/MapInfos.json`, 'utf8'));
         return Array.isArray(map_data) ? map_data.filter(item => item && typeof item === 'object' && 'name' in item).map(item => item.name) : [];
     }
     catch (err) {

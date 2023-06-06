@@ -11,7 +11,7 @@ const output_folder: string = "./output/";
 // Output: A JSON object containing missing/excess translations based on mode       //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
-    const scraped_data = ScrapeAll(folder_path, matching_files);
+    const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
     const output_JSON: Record<string, any> = {};
