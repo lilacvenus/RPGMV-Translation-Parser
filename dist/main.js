@@ -21,6 +21,7 @@
 // });
 const electron = require('electron');
 const { app, BrowserWindow, dialog, ipcMain } = electron;
+const fs = require('fs');
 const path = require('path');
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -44,11 +45,21 @@ app.whenReady().then(() => {
     });
 });
 ipcMain.on('load-file', (event, arg) => {
+    console.log("Main recieved: " + arg);
     dialog.showOpenDialog({ properties: ['openDirectory'] })
         .then((result) => {
         if (!result.canceled) {
             const folderPath = result.filePaths[0];
-            console.log(folderPath);
+            event.reply('load-file-reply', folderPath);
+            const filePath = `${folderPath}/data/System.json`;
+            try {
+                const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+                event.reply('game-title-reply', jsonData.gameTitle);
+            }
+            catch (error) {
+                event.reply('game-title-reply', undefined);
+                console.log(error);
+            }
         }
     })
         .catch((err) => {

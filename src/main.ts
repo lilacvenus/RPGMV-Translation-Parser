@@ -26,6 +26,7 @@
 
 const electron = require('electron')
 const { app, BrowserWindow, dialog, ipcMain } = electron
+const fs = require('fs')
 const path = require('path')
 
 const createWindow = () => {
@@ -53,14 +54,27 @@ app.whenReady().then(() => {
 })
 
 ipcMain.on('load-file', (event: any, arg: any) => {
+    console.log("Main recieved: " + arg);
     dialog.showOpenDialog({ properties: ['openDirectory'] })
         .then((result: any) => {
             if (!result.canceled) {
                 const folderPath = result.filePaths[0];
-                console.log(folderPath);
+                event.reply('load-file-reply', folderPath);
+
+                const filePath = `${folderPath}/data/System.json`;
+
+                try {
+                    const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+                    event.reply('game-title-reply', jsonData.gameTitle);
+                }
+                catch (error) {
+                    event.reply('game-title-reply', undefined);
+                    console.log(error);
+                }
+
             }
         })
-        .catch((err: any) => {
+        .catch((err: Error) => {
             console.log(err);
         });
 })

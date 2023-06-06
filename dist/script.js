@@ -30,11 +30,19 @@ document.getElementById('copy-button-trans')?.addEventListener('click', function
     navigator.clipboard.writeText(userTextElement?.value);
 });
 function loadFile() {
-    ipcRenderer.send('load-file');
+    ipcRenderer.send('load-file', 'ping');
 }
+ipcRenderer.on('load-file-reply', (event, arg) => {
+    console.log("Render recieved: " + arg);
+});
+ipcRenderer.on('game-title-reply', (event, arg) => {
+    console.log("Render recieved game title: " + arg);
+    const gameTitleElement = document.getElementById('game-title');
+    if (gameTitleElement) {
+        gameTitleElement.innerText = arg;
+    }
+});
 function updateTextFields(index) {
-    console.log(index);
-    console.log(typeof index);
     let originalText = keys[index];
     let transText = data.msg[originalText][currentLanguage];
     originalTextElement.value = originalText;
@@ -48,7 +56,6 @@ function updateTextFields(index) {
 }
 function saveData() {
     data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
-    console.log(data.msg[keys[currentIndex]][currentLanguage]);
 }
 previousButton?.addEventListener('click', function () {
     saveData();
