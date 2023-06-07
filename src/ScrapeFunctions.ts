@@ -1,6 +1,5 @@
 import { readFileSync, readdirSync } from 'fs';
-
-let project_path: string = "C:/Users/Venus/Desktop/Caketropolis";
+import { project_path} from './GlobalVars.js';
 
 const getMatchingFiles = () => {
     return readdirSync(`${project_path}/data/`).filter(file => file.match(/^Map\d{3}\.json$/));
