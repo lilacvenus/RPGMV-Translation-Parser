@@ -1,8 +1,7 @@
 import { ScrapeAll } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
 import { readFileSync } from 'fs';
-
-let project_path: string = "C:/Users/Venus/Desktop/Caketropolis";
+import { project_path, current_language } from './GlobalVars.js';
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 // Locates missing or excess translations and outputs them to a file for review     //

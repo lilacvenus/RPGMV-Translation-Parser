@@ -83,7 +83,7 @@ export async function translateAPI(text: string, target_lang: string): Promise<s
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: false if a string doesn't match, true if they all pass                  //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export function IsDisassembleValid(languages : string[]): boolean {
+export function IsDisassembleValid(languages: string[]): boolean {
     let scraped_data = ScrapeMessages();
     let output_JSON = Translate(languages, scraped_data, "msg");
     let mismatchCount = 0;
@@ -107,7 +107,7 @@ export function IsDisassembleValid(languages : string[]): boolean {
             console.log(`Reassembled Length: ${item[1].length}\n`);
         });
         return false;
-    } 
+    }
     else {
         console.log("All string successfully passed.");
         return true;

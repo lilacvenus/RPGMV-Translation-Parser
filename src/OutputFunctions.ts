@@ -2,8 +2,7 @@ import { ScrapeAll } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
 import { UnderTranslated, OverTranslated, NotTranslated } from './StatsFunctions.js';
 import { writeFile} from 'fs';
-
-let project_path: string = "C:/Users/Venus/Desktop/Caketropolis";
+import { project_path, current_language } from './GlobalVars.js';
 
 const WriteToFile = (file_name: string, data: any) => {
     writeFile(`${project_path}/data/${file_name}`, JSON.stringify(data), (err) => {

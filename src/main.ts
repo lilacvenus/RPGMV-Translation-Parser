@@ -4,10 +4,6 @@ import { readFileSync, writeFile } from 'fs';
 import { IsDisassembleValid } from './UserFunctions.js';
 import { NotTranslated, OverTranslated, UnderTranslated } from './StatsFunctions.js';
 import { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUnderTranslated } from './OutputFunctions.js';
+import { project_path, current_language } from './GlobalVars.js';
 
-const languages: string[] = ["Français"];
-
-// OutputTranslations(languages);
-// OutputUnderTranslated(languages);
-// OutputOverTranslated(languages);
-OutputNotTranslated();
+IsDisassembleValid(current_language);
