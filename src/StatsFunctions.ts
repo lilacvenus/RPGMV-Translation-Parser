@@ -1,6 +1,6 @@
 import { ScrapeAll } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
-import { readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 
 let project_path: string = "C:/Users/Venus/Desktop/Caketropolis";
 
@@ -13,12 +13,10 @@ const GeneralTranslated = (languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
-    console.log("mode: " + mode + "\n")
     const output_JSON: Record<string, any> = {};
 
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
-        console.log("category: " + category + "\n")
 
         const target_JSON = mode === 'under' ? old_JSON[category] : new_JSON[category];
         const compare_JSON = mode === 'under' ? new_JSON[category] : old_JSON[category];
@@ -39,14 +37,14 @@ const GeneralTranslated = (languages: string[], mode: 'under' | 'over') => {
         }
 
         else {
-            for (const key in target_JSON) {
-                if (typeof compare_JSON[key] === 'undefined') {
+            for (const key of Object.keys(compare_JSON)) {
+                if (typeof target_JSON[key] === 'undefined') {
                     output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = target_JSON[key];
+                    output_JSON[category][key] = compare_JSON[key];
                 }
             }
         }
-    };
+    }
 
     return output_JSON;
 
