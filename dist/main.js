@@ -1,6 +1,7 @@
-import { OutputOverTranslated, OutputUnderTranslated } from './OutputFunctions.js';
+import { OutputNotTranslated } from './OutputFunctions.js';
 const languages = ["Français"];
 // OutputTranslations(languages);
-OutputUnderTranslated(languages);
-OutputOverTranslated(languages);
+// OutputUnderTranslated(languages);
+// OutputOverTranslated(languages);
+OutputNotTranslated();
 //# sourceMappingURL=main.js.map

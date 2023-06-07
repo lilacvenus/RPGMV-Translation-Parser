@@ -56,7 +56,7 @@ export const NotTranslated = () => {
                 const languageObj = translations[lang];
                 for (const item in languageObj) {
                     const translation = languageObj[item];
-                    if (item != translation) {
+                    if (translation !== '') {
                         delete languageObj[item];
                     }
                 }
@@ -71,7 +71,7 @@ export const NotTranslated = () => {
                 const translationsObj = translations[key];
                 for (const lang in translationsObj) {
                     const value = translationsObj[lang];
-                    if (value !== key) {
+                    if (value !== '') {
                         delete translationsObj[lang];
                     }
                 }
