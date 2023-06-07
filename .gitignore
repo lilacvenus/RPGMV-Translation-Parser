@@ -1,5 +1,9 @@
 .vscode/
 node_modules/
+
+# API key
+.env
+
+# dist
 *.js.map
 *.js
-.env
