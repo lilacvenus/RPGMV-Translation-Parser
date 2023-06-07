@@ -2,26 +2,26 @@ import { ScrapeAll } from './ScrapeFunctions';
 import { TranslateAll } from './TranslateFunctions';
 import { UnderTranslated, OverTranslated, NotTranslated } from './StatsFunctions';
 import { writeFile } from 'fs';
-const output_folder = "./output/";
+let project_path = "C:/Users/Venus/Desktop/Caketropolis";
 const WriteToFile = (file_name, data) => {
-    writeFile(output_folder + file_name, JSON.stringify(data), (err) => {
+    writeFile(`${project_path}/data/${file_name}`, JSON.stringify(data), (err) => {
         if (err)
             throw err;
         console.log('Generated the ' + file_name + ' file!');
     });
 };
-export const OutputTranslations = (mapfile_folder, matching_files, languages) => {
+export const OutputTranslations = (languages) => {
     let output_JSON = { msg: {}, cmd: {}, terms: {}, custom: {} };
     const scraped_data = ScrapeAll();
     output_JSON = TranslateAll(languages, scraped_data);
     WriteToFile('Translations.json', output_JSON);
 };
-export const OutputUnderTranslated = (mapfile_folder, matching_files, languages) => {
-    const output_JSON = UnderTranslated(mapfile_folder, matching_files, languages);
+export const OutputUnderTranslated = (languages) => {
+    const output_JSON = UnderTranslated(languages);
     WriteToFile('UnderTranslated.json', output_JSON);
 };
-export const OutputOverTranslated = (mapfile_folder, matching_files, languages) => {
-    const output_JSON = OverTranslated(mapfile_folder, matching_files, languages);
+export const OutputOverTranslated = (languages) => {
+    const output_JSON = OverTranslated(languages);
     WriteToFile('OverTranslated.json', output_JSON);
 };
 export const OutputNotTranslated = () => {

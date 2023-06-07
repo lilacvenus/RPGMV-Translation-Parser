@@ -1,17 +1,16 @@
-import { ScrapeAll } from './ScrapeFunctions';
-import { TranslateAll } from './TranslateFunctions';
+import { ScrapeAll } from './ScrapeFunctions.js';
+import { TranslateAll } from './TranslateFunctions.js';
 import { readFileSync } from 'fs';
-const output_folder = "./output/";
-// TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
+let project_path = "C:/Users/Venus/Desktop/Caketropolis";
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 // Locates missing or excess translations and outputs them to a file for review     //
 // Input: Path to map000 files, array of all MAP000.json files, array of languages  //
 // Output: A JSON object containing missing/excess translations based on mode       //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const GeneralTranslated = (folder_path, matching_files, languages, mode) => {
+const GeneralTranslated = (languages, mode) => {
     const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
     const output_JSON = {};
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
@@ -48,7 +47,7 @@ export const GeneralTranslated = (folder_path, matching_files, languages, mode) 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const NotTranslated = () => {
     // Get the JSON that's already been translated
-    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
     // Iterate over the categories: "msg", "cmd", "terms", "custom"
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
@@ -89,10 +88,10 @@ export const NotTranslated = () => {
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const OverTranslated = (folder_path, matching_files, languages) => {
-    return GeneralTranslated(folder_path, matching_files, languages, 'over');
+export const OverTranslated = (languages) => {
+    return GeneralTranslated(languages, 'over');
 };
-export const UnderTranslated = (folder_path, matching_files, languages) => {
-    return GeneralTranslated(folder_path, matching_files, languages, 'under');
+export const UnderTranslated = (languages) => {
+    return GeneralTranslated(languages, 'under');
 };
 //# sourceMappingURL=StatsFunctions.js.map

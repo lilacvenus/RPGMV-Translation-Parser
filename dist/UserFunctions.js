@@ -71,7 +71,7 @@ export async function translateAPI(text, target_lang) {
 //  Input: The folder of map files and the list of MAP000 files                     //
 //  Output: false if a string doesn't match, true if they all pass                  //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export function IsDisassembleValid(mapfile_folder, matching_files, languages) {
+export function IsDisassembleValid(languages) {
     let scraped_data = ScrapeMessages();
     let output_JSON = Translate(languages, scraped_data, "msg");
     let mismatchCount = 0;

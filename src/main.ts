@@ -1,16 +1,27 @@
-import { ScrapeAll } from './ScrapeFunctions.js';
+import { ScrapeAll, ScrapeCommands, ScrapeMapNames, ScrapeMessages } from './ScrapeFunctions.js';
 import { TranslateAll } from './TranslateFunctions.js';
 import fs from 'fs';
+import { IsDisassembleValid } from './UserFunctions.js';
+import { NotTranslated, OverTranslated, UnderTranslated } from './StatsFunctions.js';
 
 const languages: string[] = ["Français"];
 
-let scraped_data = ScrapeAll();
-let output_JSON = TranslateAll(languages, scraped_data);
+let scraped_all = ScrapeAll();
+// let scraped_msg = ScrapeMessages();
+// let scraped_cmd = ScrapeCommands();
+// let scraped_map = ScrapeMapNames();
 
-fs.writeFile('output.json', JSON.stringify(output_JSON), (err) => {
-    if (err) throw err;
-    console.log('Output JSON has been written to output.json');
-});
+// IsDisassembleValid(languages);
+
+UnderTranslated(languages);
+
+
+
+
+// fs.writeFile('output.json', JSON.stringify(output_JSON), (err) => {
+//     if (err) throw err;
+//     console.log('Output JSON has been written to output.json');
+// });
 
 
 // let array = splitDialogue(key);
