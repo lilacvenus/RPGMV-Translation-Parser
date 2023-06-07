@@ -16,7 +16,7 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
             const translations: { [key: string]: string } = {};
             current_array.forEach((new_translation: string) => {
                 languages.forEach((language: string) => {
-                    translations[new_translation] = new_translation;
+                    translations[new_translation] = '';
                     JSON["custom"][language] = translations;
                 });
             });
@@ -25,7 +25,7 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
             current_array.forEach((new_translation: string) => {
                 languages.forEach((language: string) => {
                     JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
-                    JSON[category[index]][new_translation][language] = new_translation;
+                    JSON[category[index]][new_translation][language] = '';
                 });
             });
         }
@@ -52,7 +52,7 @@ export const Translate = (languages: string[], content_array: string[], category
         const translations: { [key: string]: string } = {};
         content_array.forEach((new_translation: string) => {
             languages.forEach((language: string) => {
-                translations[new_translation] = new_translation;
+                translations[new_translation] = '';
                 newJSON["custom"][language] = translations;
             });
         });
@@ -62,7 +62,7 @@ export const Translate = (languages: string[], content_array: string[], category
         content_array.forEach(new_translation => {
             languages.forEach(language => {
                 newJSON[category][new_translation] = newJSON[category][new_translation] || {};
-                newJSON[category][new_translation][language] = new_translation;
+                newJSON[category][new_translation][language] = '';
             });
         });
     }

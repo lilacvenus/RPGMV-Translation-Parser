@@ -12,7 +12,7 @@ export const TranslateAll = (languages, scraped_data) => {
             const translations = {};
             current_array.forEach((new_translation) => {
                 languages.forEach((language) => {
-                    translations[new_translation] = new_translation;
+                    translations[new_translation] = '';
                     JSON["custom"][language] = translations;
                 });
             });
@@ -21,7 +21,7 @@ export const TranslateAll = (languages, scraped_data) => {
             current_array.forEach((new_translation) => {
                 languages.forEach((language) => {
                     JSON[category[index]][new_translation] = JSON[category[index]][new_translation] || {};
-                    JSON[category[index]][new_translation][language] = new_translation;
+                    JSON[category[index]][new_translation][language] = '';
                 });
             });
         }
@@ -43,7 +43,7 @@ export const Translate = (languages, content_array, category, existingJSON) => {
         const translations = {};
         content_array.forEach((new_translation) => {
             languages.forEach((language) => {
-                translations[new_translation] = new_translation;
+                translations[new_translation] = '';
                 newJSON["custom"][language] = translations;
             });
         });
@@ -52,7 +52,7 @@ export const Translate = (languages, content_array, category, existingJSON) => {
         content_array.forEach(new_translation => {
             languages.forEach(language => {
                 newJSON[category][new_translation] = newJSON[category][new_translation] || {};
-                newJSON[category][new_translation][language] = new_translation;
+                newJSON[category][new_translation][language] = '';
             });
         });
     }

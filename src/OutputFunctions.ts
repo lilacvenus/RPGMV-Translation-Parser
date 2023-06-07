@@ -1,6 +1,6 @@
-import { ScrapeAll } from './ScrapeFunctions';
-import { TranslateAll } from './TranslateFunctions';
-import { UnderTranslated, OverTranslated, NotTranslated } from './StatsFunctions';
+import { ScrapeAll } from './ScrapeFunctions.js';
+import { TranslateAll } from './TranslateFunctions.js';
+import { UnderTranslated, OverTranslated, NotTranslated } from './StatsFunctions.js';
 import { writeFile} from 'fs';
 
 let project_path: string = "C:/Users/Venus/Desktop/Caketropolis";

@@ -13,10 +13,12 @@ const GeneralTranslated = (languages: string[], mode: 'under' | 'over') => {
     const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
+    console.log("mode: " + mode + "\n")
     const output_JSON: Record<string, any> = {};
 
     const categories = ["msg", "cmd", "terms", "custom"];
     for (const category of categories) {
+        console.log("category: " + category + "\n")
 
         const target_JSON = mode === 'under' ? old_JSON[category] : new_JSON[category];
         const compare_JSON = mode === 'under' ? new_JSON[category] : old_JSON[category];
