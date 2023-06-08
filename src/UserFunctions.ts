@@ -84,8 +84,7 @@ export async function translateAPI(text: string, target_lang: string): Promise<s
 //  Output: false if a string doesn't match, true if they all pass                  //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export function IsDisassembleValid(languages: string[]): boolean {
-    let scraped_data = ScrapeMessages();
-    let output_JSON = Translate(languages, scraped_data, "msg");
+    let output_JSON = Translate(languages, ScrapeMessages(), "msg");
     let mismatchCount = 0;
     let nonmatchingStrings = [];
 
@@ -100,12 +99,6 @@ export function IsDisassembleValid(languages: string[]): boolean {
 
     if (mismatchCount > 0) {
         console.log(`Disassembly/Reassembly failed. ${mismatchCount} strings did not match.`);
-        nonmatchingStrings.forEach((item) => {
-            console.log(`Original: ${item[0]}`);
-            console.log(`Original Length: ${item[0].length}`);
-            console.log(`Reassembled: ${item[1]}`);
-            console.log(`Reassembled Length: ${item[1].length}\n`);
-        });
         return false;
     }
     else {
