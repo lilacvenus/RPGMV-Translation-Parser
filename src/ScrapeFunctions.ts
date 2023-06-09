@@ -11,7 +11,7 @@ const getMatchingFiles = () => {
 //  Output: A 2D array of all the scraped data                                      //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const ScrapeAll = () => {
-    let scraped_terms: string[] = [];
+    const scraped_terms: string[] = []; 
     return [ScrapeMessages(), ScrapeCommands(), scraped_terms, ScrapeMapNames()];
 };
 

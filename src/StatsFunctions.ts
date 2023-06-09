@@ -8,7 +8,8 @@ import { project_path, current_language } from './GlobalVars.js';
 // Input: Path to map000 files, array of all MAP000.json files, array of languages  //
 // Output: A JSON object containing missing/excess translations based on mode       //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-const GeneralTranslated = (languages: string[], mode: 'under' | 'over') => {
+const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') => {
+    const languages = typeof language === 'string' ? [language] : language;
     const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
     const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
@@ -112,10 +113,10 @@ export const NotTranslated = () => {
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
-export const OverTranslated = (languages: string[]) => {
-    return GeneralTranslated(languages, 'over');
+export const OverTranslated = () => {
+    return GeneralTranslated(current_language, 'over');
 };
 
-export const UnderTranslated = (languages: string[]) => {
-    return GeneralTranslated(languages, 'under');
+export const UnderTranslated = () => {
+    return GeneralTranslated(current_language, 'under');
 };

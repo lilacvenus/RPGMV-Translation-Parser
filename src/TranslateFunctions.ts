@@ -4,7 +4,8 @@
 //         Array of string arrays [[msg], [cmd], [terms], [custom]]                 //
 //  Output: JSON of blank translations for all categories                           //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
+export const TranslateAll = (language: string | string[], scraped_data: string[][]) => {
+    const languages = typeof language === 'string' ? [language] : language;
     let JSON: any = {};
     const category: string[] = ["msg", "cmd", "terms", "custom"];
 
@@ -25,7 +26,8 @@ export const TranslateAll = (languages: string[], scraped_data: string[][]) => {
 //  Output: JSON of previous translations + chosen translation category             //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
-export const Translate = (languages: string[], content_array: string[], category: string, existingJSON?: any) => {
+export const Translate = (language: string | string[], content_array: string[], category: string, existingJSON?: any) => {
+    const languages = typeof language === 'string' ? [language] : language;
     let newJSON: any = { ...existingJSON };
     newJSON[category] = newJSON[category] || {};
 

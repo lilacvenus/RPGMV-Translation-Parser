@@ -7,7 +7,7 @@ import { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUn
 import { project_path, current_language } from './GlobalVars.js';
 
 
-IsDisassembleValid(["French"]);
+IsDisassembleValid(current_language);
 // const scraped_data = ScrapeAll();
 // let output = TranslateAll(["French"], scraped_data);
 // // let output = Translate(["French"], scraped_data[0], "msg");

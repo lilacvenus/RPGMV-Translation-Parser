@@ -11,24 +11,22 @@ const WriteToFile = (file_name: string, data: any) => {
     });
 }
 
-export const OutputTranslations = (languages: string[]) =>{
+export const OutputTranslations = () =>{
     let output_JSON: any = { msg: {}, cmd: {}, terms: {}, custom: {} };
 
-    output_JSON = TranslateAll(languages, ScrapeAll());
+    output_JSON = TranslateAll(current_language, ScrapeAll());
 
     WriteToFile('Translations.json', output_JSON);
 }
 
-export const OutputUnderTranslated = (languages: string[]) =>{
-
-    const output_JSON = UnderTranslated(languages);
+export const OutputUnderTranslated = () =>{
+    const output_JSON = UnderTranslated();
 
     WriteToFile('UnderTranslated.json', output_JSON);
 }
 
-export const OutputOverTranslated = (languages: string[]) =>{
-
-    const output_JSON = OverTranslated(languages);
+export const OutputOverTranslated = () =>{
+    const output_JSON = OverTranslated();
 
     WriteToFile('OverTranslated.json', output_JSON);
 }
