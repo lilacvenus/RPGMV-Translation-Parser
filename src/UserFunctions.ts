@@ -1,8 +1,8 @@
-import dotnev from 'dotenv';
-import { ScrapeMessages } from './ScrapeFunctions.js';
-import { Translate } from './TranslateFunctions.js';
+const dotenv = require('dotenv');
+const { ScrapeMessages } = require('./ScrapeFunctions.js');
+const { Translate } = require('./TranslateFunctions.js');
 
-dotnev.config();
+dotenv.config();
 const API_KEY = process.env.API_KEY;
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//

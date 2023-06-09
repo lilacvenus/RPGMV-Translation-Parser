@@ -47,10 +47,6 @@ function loadFile() {
     ipcRenderer.send('load-file', 'ping');
 }
 
-ipcRenderer.on('load-file-reply', (event: any, arg: any) => {
-    console.log("Render recieved: " + arg);
-});
-
 ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
     console.log("Render recieved game title: " + arg);
     const gameTitleElement = document.getElementById('game-title');

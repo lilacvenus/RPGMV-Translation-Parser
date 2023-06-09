@@ -1,8 +1,7 @@
-import { readFileSync, readdirSync } from 'fs';
-import { project_path} from './GlobalVars.js';
+const { readFileSync, readdirSync } = require('fs');
 
 const getMatchingFiles = () => {
-    return readdirSync(`${project_path}/data/`).filter(file => file.match(/^Map\d{3}\.json$/));
+    return readdirSync(`${globalThis.project_path}/data/`).filter((file : any) => file.match(/^Map\d{3}\.json$/));
 };
 
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
@@ -39,7 +38,7 @@ export const ScrapeMessages = () => {
     const matching_files = getMatchingFiles();
 
     matching_files.forEach((file: string) => {
-        const fileJson = JSON.parse(readFileSync(`${project_path}/data/${file}`, 'utf8'));
+        const fileJson = JSON.parse(readFileSync(`${globalThis.project_path}/data/${file}`, 'utf8'));
         let concat_message = "";
 
         fileJson.events.forEach((event: any) => {
@@ -77,7 +76,7 @@ export const ScrapeCommands = () => {
     const matching_files = getMatchingFiles();
 
     matching_files.forEach((file: string) => {
-        const fileJson = JSON.parse(readFileSync(`${project_path}/data/${file}`, 'utf8'));
+        const fileJson = JSON.parse(readFileSync(`${globalThis.project_path}/data/${file}`, 'utf8'));
 
         fileJson.events.forEach((event: any) => {
             if (event && event.pages) {
@@ -107,7 +106,7 @@ export const ScrapeCommands = () => {
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const ScrapeMapNames = (): string[] => {
     try {
-        const map_data = JSON.parse(readFileSync(`${project_path}/data/MapInfos.json`, 'utf8'));
+        const map_data = JSON.parse(readFileSync(`${globalThis.project_path}/data/MapInfos.json`, 'utf8'));
         return Array.isArray(map_data) ? map_data.filter(item => item && typeof item === 'object' && 'name' in item).map(item => item.name) : [];
     } catch (err) {
         console.error(err);
