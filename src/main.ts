@@ -5,6 +5,10 @@ const { readFileSync, writeFile } = require('fs');
 // const { NotTranslated, OverTranslated, UnderTranslated } = require('./StatsFunctions.js');
 // const { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUnderTranslated } = require('./OutputFunctions.js');
 
+// Global variables
+var project_path: string;
+var current_language: string;
+
 const electron = require('electron')
 const { app, BrowserWindow, dialog, ipcMain } = electron
 const fs = require('fs')
