@@ -2,11 +2,8 @@ const { ScrapeAll } = require('./ScrapeFunctions.js');
 const { TranslateAll } = require('./TranslateFunctions.js');
 const { readFileSync } = require('fs');
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-// Locates missing or excess translations and outputs them to a file for review     //
-// Input: Path to map000 files, array of all MAP000.json files, array of languages  //
-// Output: A JSON object containing missing/excess translations based on mode       //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Locates missing or excess translations and outputs them to a file for review by comparing 
+// the current JSON file with what a brand new one would look like.    
 const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') => {
     const languages = typeof language === 'string' ? [language] : language;
     const scraped_data = ScrapeAll();
@@ -50,11 +47,7 @@ const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') 
 };
 
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-// Filters out translated objects from Translations.json in the output folder       //
-// Input: None                                                                      //
-// Output: A JSON object containing untranslated objects                            //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Returns JSON for all translations that didn't have a translation (are still an empty string)
 export const NotTranslated = () => {
     // Get the JSON that's already been translated
     const old_JSON = JSON.parse(readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));

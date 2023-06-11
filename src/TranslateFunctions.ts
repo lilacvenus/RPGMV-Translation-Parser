@@ -1,9 +1,4 @@
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Converts all arrays to the JSON format for use by the translation plugin        //
-//  Input: Array of strings for languages,                                          //
-//         Array of string arrays [[msg], [cmd], [terms], [custom]]                 //
-//  Output: JSON of blank translations for all categories                           //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Wrapper function that translates a 2D array with 4 elements into a blank translation file
 export const TranslateAll = (language: string | string[], scraped_data: string[][]) => {
     const languages = typeof language === 'string' ? [language] : language;
     let JSON: any = {};
@@ -17,15 +12,8 @@ export const TranslateAll = (language: string | string[], scraped_data: string[]
 };
 
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Converts an array to the JSON format for use by the translation plugin          //
-//  Input: Array of strings for all the languages you want,                         //
-//         Array of strings to generate translations for,                           //
-//         "msg", "cmd", "terms", or "custom" depending on the category             //
-//         The existing JSON so it doesn't overwrite old data,                      //
-//  Output: JSON of previous translations + chosen translation category             //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
+//  Converts an array to the JSON format for use by the translation plugin
 export const Translate = (language: string | string[], content_array: string[], category: string, existingJSON?: any) => {
     const languages = typeof language === 'string' ? [language] : language;
     let newJSON: any = { ...existingJSON };

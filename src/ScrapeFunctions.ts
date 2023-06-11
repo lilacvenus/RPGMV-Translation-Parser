@@ -4,23 +4,15 @@ const getMatchingFiles = () => {
     return readdirSync(`${globalThis.project_path}/data/`).filter((file : any) => file.match(/^Map\d{3}\.json$/));
 };
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  A simple function that combines all other functions into one command            //
-//  Input: The folder of map files and the list of MAP000 files                     //
-//  Output: A 2D array of all the scraped data                                      //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Wrapped function to scrape all data from the project
 export const ScrapeAll = () => {
     const scraped_terms: string[] = []; 
     return [ScrapeMessages(), ScrapeCommands(), scraped_terms, ScrapeMapNames()];
 };
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Looks for items with the 401 code, which are the dialogue messages              //
-//  Concatenates them into a single string separated by \n for multi-line messages  //
-//  Input: The folder of map files and the list of MAP000 files                     //
-//  Output: An array of all the dialogue messages                                   //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
+//  Scrapes items with the 401 code, which are the dialogue messages and
+//  Concatenates grouped messages into one string separated by a newline
 export const ScrapeMessages = () => {
     const concatMessages = (item: any, concatMessage: string) => {
         if (item.parameters && item.parameters.length > 0) {
@@ -65,11 +57,8 @@ export const ScrapeMessages = () => {
     return scraped_messages;
 };
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Looks for items with the 102 code, which are the selectable options             //
-//  Input: The folder of map files and the list of MAP000 files                     //
-//  Output: An array of all the dialogue options                                    //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+
+// Scrapes items with the 102 code, which are the menu options
 export const ScrapeCommands = () => {
 
     const scraped_commands: string[] = [];
@@ -99,11 +88,7 @@ export const ScrapeCommands = () => {
     return scraped_commands;
 };
 
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
-//  Scrapes MapInfos.JSON folder which contains all level names in the game         //
-//  Input: The folder that contains the MapInfos.json file                          //
-//  Output: An array of all the map names                                           //
-// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Scrapes MapInfos.JSON from the project_path which contains all level names in the game
 export const ScrapeMapNames = (): string[] => {
     try {
         const map_data = JSON.parse(readFileSync(`${globalThis.project_path}/data/MapInfos.json`, 'utf8'));
