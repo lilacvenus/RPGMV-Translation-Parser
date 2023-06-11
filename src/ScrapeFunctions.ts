@@ -5,7 +5,7 @@ const getMatchingFiles = () => {
 };
 
 // Wrapped function to scrape all data from the project
-export const ScrapeAll = () => {
+const ScrapeAll = () => {
     const scraped_terms: string[] = []; 
     return [ScrapeMessages(), ScrapeCommands(), scraped_terms, ScrapeMapNames()];
 };
@@ -13,7 +13,7 @@ export const ScrapeAll = () => {
 
 //  Scrapes items with the 401 code, which are the dialogue messages and
 //  Concatenates grouped messages into one string separated by a newline
-export const ScrapeMessages = () => {
+const ScrapeMessages = () => {
     const concatMessages = (item: any, concatMessage: string) => {
         if (item.parameters && item.parameters.length > 0) {
             const parameter = item.parameters[0].trim();
@@ -59,7 +59,7 @@ export const ScrapeMessages = () => {
 
 
 // Scrapes items with the 102 code, which are the menu options
-export const ScrapeCommands = () => {
+const ScrapeCommands = () => {
 
     const scraped_commands: string[] = [];
     const matching_files = getMatchingFiles();
@@ -89,7 +89,7 @@ export const ScrapeCommands = () => {
 };
 
 //  Scrapes MapInfos.JSON from the project_path which contains all level names in the game
-export const ScrapeMapNames = (): string[] => {
+const ScrapeMapNames = (): string[] => {
     try {
         const map_data = JSON.parse(readFileSync(`${globalThis.project_path}/data/MapInfos.json`, 'utf8'));
         return Array.isArray(map_data) ? map_data.filter(item => item && typeof item === 'object' && 'name' in item).map(item => item.name) : [];
@@ -98,3 +98,5 @@ export const ScrapeMapNames = (): string[] => {
         return [];
     }
 };
+
+module.exports = { ScrapeAll, ScrapeMessages, ScrapeCommands, ScrapeMapNames };

@@ -31,7 +31,7 @@ let data: {
 let isAutofillChecked = autofillCheckbox?.checked;
 let keys = Object.keys(data.msg);
 let currentIndex = 0;
-const currentLanguage = 'Français';
+const currentLanguage = "Français";
 
 
 
@@ -53,6 +53,14 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
     if (gameTitleElement) {
         gameTitleElement.innerText = arg;
     }
+});
+
+ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
+    console.log("Render recieved translation data: " + arg);
+    data = arg;
+    keys = Object.keys(data.msg);
+    currentIndex = 0;
+    updateTextFields(currentIndex);
 });
 
 function updateTextFields(index: number) {

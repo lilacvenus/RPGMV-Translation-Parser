@@ -1,6 +1,5 @@
-// const { ScrapeAll, ScrapeCommands, ScrapeMapNames, ScrapeMessages } = require('./ScrapeFunctions.js');
-// const { Translate, TranslateAll } = require('./TranslateFunctions.js');
-const { readFileSync, writeFile } = require('fs');
+// const ScrapeFunctions = require('./ScrapeFunctions.js');
+// const TranslateFunctions = require('./TranslateFunctions.js');
 // const { IsDisassembleValid } = require('./UserFunctions.js');
 // const { NotTranslated, OverTranslated, UnderTranslated } = require('./StatsFunctions.js');
 // const { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUnderTranslated } = require('./OutputFunctions.js');
@@ -53,6 +52,16 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                 catch (error) {
                     event.reply('game-title-reply', undefined);
                     console.log(`Error loading game title: ${error}`);
+                }
+
+                try {
+                    // Reading "Français" as "Fran├ºais" which causes issues in all other code
+                    let translatedData = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf-8'));
+                    event.reply('load-file-translation-reply', translatedData);
+                    console.log(translatedData);
+                }
+                catch (error) {
+                    console.log(`Error loading Translation.JSON: ${error}`);
                 }
 
             }
