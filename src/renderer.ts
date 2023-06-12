@@ -56,7 +56,7 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
 });
 
 ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
-    console.log("Render recieved translation data: " + arg);
+    console.log("Render recieved translation data: " + JSON.stringify(arg));
     data = arg;
     keys = Object.keys(data.msg);
     currentIndex = 0;

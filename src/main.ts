@@ -54,16 +54,9 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                     console.log(`Error loading game title: ${error}`);
                 }
 
-                try {
-                    // Reading "Français" as "Fran├ºais" which causes issues in all other code
-                    let translatedData = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf-8'));
-                    event.reply('load-file-translation-reply', translatedData);
-                    console.log(translatedData);
-                }
-                catch (error) {
-                    console.log(`Error loading Translation.JSON: ${error}`);
-                }
-
+                let translatedData = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));
+                event.reply('load-file-translation-reply', translatedData);
+                fs.writeFileSync(`${globalThis.project_path}/data/Translations2.json`, JSON.stringify(translatedData), 'utf8');
             }
         })
         .catch((err: Error) => {
