@@ -6,7 +6,6 @@
 
 // Global variables
 var project_path: string;
-var current_language: string;
 
 const electron = require('electron')
 const { app, BrowserWindow, dialog, ipcMain } = electron
@@ -66,6 +65,4 @@ ipcMain.on('load-file', (event: any, arg: any) => {
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
-    console.log(`Project path: ${globalThis.project_path}`);
-    console.log(`Target language: ${globalThis.current_language}`);
 })

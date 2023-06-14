@@ -9,11 +9,14 @@ const nextButton = document.getElementById('next-button');
 const loadButton = document.getElementById('load-button');
 
 let data = {
-    msg: {}
+    msg: {},
+    cmd: {},
+    terms: {},
+    custom: {}
 };
 
 let isAutofillChecked = autofillCheckbox?.checked;
-let keys : any = [];
+let keys: any = [];
 let currentIndex = 0;
 const currentLanguage = "Français";
 
@@ -60,6 +63,26 @@ function updateTextFields(index: number) {
 function saveData() {
     data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
+
+let currentCategory : string;
+
+function switchCategory(category: string) {
+    if (currentCategory !== category) {
+        currentCategory = category;
+        // TODO: Update keys and currentIndex
+        updateActiveButton();
+    }
+}
+
+function updateActiveButton() {
+    const categoryButtons = document.querySelectorAll('.button-category');
+
+    categoryButtons.forEach(button => {
+        const isActive = button.id === `category-${currentCategory}`;
+        button.classList.toggle('active', isActive);
+    });
+}
+
 
 function handleClick(isPrevious: boolean) {
     saveData();

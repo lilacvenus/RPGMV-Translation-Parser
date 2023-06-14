@@ -21,8 +21,7 @@
             <button id="category-msg" class="button button-category" onclick="switchCategory('msg')">msg</button>
             <button id="category-cmd" class="button button-category" onclick="switchCategory('cmd')">cmd</button>
             <button id="category-terms" class="button button-category" onclick="switchCategory('terms')">terms</button>
-            <button id="category-custom" class="button button-category"
-                onclick="switchCategory('custom')">custom</button>
+            <button id="category-custom" class="button button-category" onclick="switchCategory('custom')">custom</button>
         </div>
 
         <label for="original-text">Original Text:</label>
@@ -57,33 +56,6 @@
     </div>
 
     <script src="dist/renderer.js" defer></script>
-    <script>
-        let currentCategory = 'msg';
-
-        function switchCategory(category) {
-            if (currentCategory === category) {
-                currentCategory = '';
-            } else {
-                currentCategory = category;
-            }
-
-            updateActiveButton();
-        }
-
-        function updateActiveButton() {
-            const categoryButtons = document.getElementsByClassName('button-category');
-
-            for (let i = 0; i < categoryButtons.length; i++) {
-                const button = categoryButtons[i];
-
-                if (button.id === `category-${currentCategory}`) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            }
-        }
-    </script>
 </body>
 
 
