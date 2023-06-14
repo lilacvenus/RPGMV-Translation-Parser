@@ -4,6 +4,7 @@
 <head>
     <title>XP Demo</title>
     <link rel="stylesheet" href="https://unpkg.com/xp.css">
+    <audio id="clickSound" src="Sounds/XPclick.mp3"></audio>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var buttons = document.querySelectorAll("button");
@@ -23,10 +24,21 @@
         html {
             background-color: red;
         }
+
         .window-body {
-            margin: 0; /*Overwrite default margin from CSS file*/
+            margin: 0;
+            /*Overwrite default margin from CSS file*/
             padding: 8px;
             background-color: #efeddf;
+        }
+
+        .load-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .project-name {
+            margin-left: 8px;
         }
     </style>
 
@@ -35,7 +47,7 @@
 <body>
     <div class="window" style="width: 100%">
         <div class="title-bar">
-            <div class="title-bar-text">A Complete Window</div>
+            <div class="title-bar-text">RPGMV Translation Tool</div>
             <div class="title-bar-controls">
                 <button aria-label="Minimize"></button>
                 <button aria-label="Maximize"></button>
@@ -44,16 +56,29 @@
         </div>
     </div>
     <div class="window-body">
+        <div class="load-section">
+            <button>Load Project</button>
+            <div class="project-name"> - No Project Loaded</div>
+        </div>
+
+
+
         <div class="field-row-stacked" style="width: 200px">
-            <label for="text24">Additional notes</label>
+            <label for="text24">Original Text</label>
             <textarea id="text24" rows="3"></textarea>
         </div>
         <div class="field-row-stacked" style="width: 200px">
-            <label for="text24">Additional notes</label>
+            <label for="text24">Translation</label>
             <textarea id="text24" rows="3"></textarea>
         </div>
-        <audio id="clickSound" src="Sounds/XPclick.mp3"></audio>
-        <button>Click me</button>
+
+        <fieldset>
+            <legend>Generate Files</legend>
+            <button>Overtranslated</button>
+            <button>Undertranslated</button>
+            <button>Translations</button>
+            <button>Not Translated</button>
+        </fieldset>
     </div>
 
 </body>
