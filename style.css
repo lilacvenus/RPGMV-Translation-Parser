@@ -61,3 +61,9 @@ body {
     cursor: pointer;
     background-color: var(--mint-green);
 }
+
+.button.button-category.active {
+    background-color: var(--mint-green);
+    color: var(--dark-green);
+    border: 2px solid whitesmoke;
+}

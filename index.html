@@ -4,7 +4,7 @@
 <head>
     <title>RPGMV Translation Tool</title>
     <link rel="stylesheet" href="style.css">
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
 </head>
 
 <body>
@@ -17,6 +17,14 @@
     </div>
 
     <div class="container">
+        <div class="button-container">
+            <button id="category-msg" class="button button-category" onclick="switchCategory('msg')">msg</button>
+            <button id="category-cmd" class="button button-category" onclick="switchCategory('cmd')">cmd</button>
+            <button id="category-terms" class="button button-category" onclick="switchCategory('terms')">terms</button>
+            <button id="category-custom" class="button button-category"
+                onclick="switchCategory('custom')">custom</button>
+        </div>
+
         <label for="original-text">Original Text:</label>
         <div>
             <input type="text" id="original-text" class="text-input" />
@@ -28,7 +36,6 @@
             <input type="text" id="user-text" class="text-input" />
             <button id="copy-button-trans" class="button">Copy</button>
         </div>
-
 
         <label for="autofill-checkbox">
             <input type="checkbox" id="autofill-checkbox" /> Enable AI Autofill
@@ -50,6 +57,35 @@
     </div>
 
     <script src="dist/renderer.js" defer></script>
+    <script>
+        let currentCategory = 'msg';
+
+        function switchCategory(category) {
+            if (currentCategory === category) {
+                currentCategory = '';
+            } else {
+                currentCategory = category;
+            }
+
+            updateActiveButton();
+        }
+
+        function updateActiveButton() {
+            const categoryButtons = document.getElementsByClassName('button-category');
+
+            for (let i = 0; i < categoryButtons.length; i++) {
+                const button = categoryButtons[i];
+
+                if (button.id === `category-${currentCategory}`) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            }
+        }
+    </script>
 </body>
+
+
 
 </html>
