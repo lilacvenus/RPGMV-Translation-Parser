@@ -1,63 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>RPGMV Translation Tool</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="utf-8" />
+    <title>XP Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/xp.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var buttons = document.querySelectorAll("button");
+            var audio = document.getElementById("clickSound");
+
+            function playClickSound() {
+                audio.play();
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener("click", playClickSound);
+            });
+        });
+    </script>
+
+    <style>
+        html {
+            background-color: red;
+        }
+        .window-body {
+            margin: 0; /*Overwrite default margin from CSS file*/
+            padding: 8px;
+            background-color: #efeddf;
+        }
+    </style>
+
 </head>
 
 <body>
-    <div>
-        <h1 id="game-title">Please Select Project Folder</h1>
-    </div>
-
-    <div class="container">
-        <button id="load-button" class="button" onclick="loadFile()">Load</button>
-    </div>
-
-    <div class="container">
-        <div class="button-container">
-            <button id="category-msg" class="button button-category" onclick="switchCategory('msg')">msg</button>
-            <button id="category-cmd" class="button button-category" onclick="switchCategory('cmd')">cmd</button>
-            <button id="category-terms" class="button button-category" onclick="switchCategory('terms')">terms</button>
-            <button id="category-custom" class="button button-category" onclick="switchCategory('custom')">custom</button>
-        </div>
-
-        <label for="original-text">Original Text:</label>
-        <div>
-            <input type="text" id="original-text" class="text-input" />
-            <button id="copy-button" class="button">Copy</button>
-        </div>
-
-        <label for="user-text">Translated Text:</label>
-        <div>
-            <input type="text" id="user-text" class="text-input" />
-            <button id="copy-button-trans" class="button">Copy</button>
-        </div>
-
-        <label for="autofill-checkbox">
-            <input type="checkbox" id="autofill-checkbox" /> Enable AI Autofill
-        </label>
-
-        <div class="button-container">
-            <button id="previous-button" class="button">Previous</button>
-            <button id="next-button" class="button">Next</button>
+    <div class="window" style="width: 100%">
+        <div class="title-bar">
+            <div class="title-bar-text">A Complete Window</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
         </div>
     </div>
-
-    <div class="container">
-        <div class="button-container">
-            <button id="generate-translations" class="button">Generate Translations</button>
-            <button id="generate-overtranslated" class="button">Over Translated</button>
-            <button id="generate-undertranslated" class="button">Under Translated</button>
-            <button id="generate-nottranslated" class="button">Not Translated</button>
+    <div class="window-body">
+        <div class="field-row-stacked" style="width: 200px">
+            <label for="text24">Additional notes</label>
+            <textarea id="text24" rows="3"></textarea>
         </div>
+        <div class="field-row-stacked" style="width: 200px">
+            <label for="text24">Additional notes</label>
+            <textarea id="text24" rows="3"></textarea>
+        </div>
+        <audio id="clickSound" src="Sounds/XPclick.mp3"></audio>
+        <button>Click me</button>
     </div>
 
-    <script src="dist/renderer.js" defer></script>
 </body>
-
-
 
 </html>
