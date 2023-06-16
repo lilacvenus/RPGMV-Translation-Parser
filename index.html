@@ -22,19 +22,15 @@
 
     <style>
         html {
-            background-color: red;
+            background-image: url(https://cdn.wallpaperhub.app/cloudcache/c/1/4/5/2/7/c1452724f0c3bb5a9a9a9898b4c0a0cfac091f70.jpg);
+            background-size: cover;
         }
 
         .window-body {
             margin: 0;
             /*Overwrite default margin from CSS file*/
-            padding: 8px;
+            padding: 8px 16px;
             background-color: #efeddf;
-        }
-
-        .load-section {
-            display: flex;
-            align-items: center;
         }
 
         .project-name {
@@ -52,7 +48,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 8px 0;
+            margin: 8px 8px;
+        }
+
+        .grid-3> :first-child,
+        .grid-3> :last-child {
+            align-items: flex-start;
         }
     </style>
 
@@ -71,34 +72,55 @@
     </div>
     <div class="window-body">
         <div class="grid-3">
-            <div class="load-section">
-                <button>Load Project</button>
-                <div class="project-name"> - No Project Loaded</div>
-            </div>
+            <fieldset>
+                <legend>Project</legend>
 
-            <main>
+                <div class="load-section">
+                    <button>Load Project</button>
+                    <div class="project-name"> - No Project Loaded</div>
+                </div>
+            </fieldset>
+
+
+            <fieldset>
                 <legend>Translate Text</legend>
+
                 <div class="field-row-stacked" style="width: 100%">
                     <label for="text24">Original Text</label>
-                    <textarea id="text24" rows="3"></textarea>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray;"></textarea>
                 </div>
                 <div class="field-row-stacked" style="width: 100%">
                     <label for="text24">Translation</label>
-                    <textarea id="text24" rows="3"></textarea>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray;"></textarea>
                 </div>
+            </fieldset>
 
-            </main>
+            <fieldset>
+                <legend>Tools / Settings</legend>
 
-            <div class="AI">
-                <div class="field-row">
-                    <label for="text21">DEEPL Key</label>
-                    <input id="text21" type="text" />
+                <div class="AI">
+                    <div class="field-row">
+                        <label for="text21">DEEPL Key: </label>
+                        <input id="text21" type="text" />
+                    </div>
+                    <div class="field-row">
+                        <label for="text21">Target Language: </label>
+                        <input id="text21" type="text" />
+                    </div>
+                    <div class="field-row" style="margin-top: 16px;">
+                        <input checked type="checkbox" id="example2">
+                        <label for="example2">Enable AI Suggestion</label>
+                    </div>
+                    <div class="field-row-stacked" style="margin-top: 16px;">
+                        <label>AI Target Language</label>
+                        <select>
+                            <option>FR</option>
+                            <!-- Make API request to get all available languages -->
+                        </select>
+                    </div>
+                    
                 </div>
-                <div class="field-row">
-                    <input checked type="checkbox" id="example2">
-                    <label for="example2">Enable AI Suggestion</label>
-                </div>
-            </div>
+            </fieldset>
 
         </div>
 
