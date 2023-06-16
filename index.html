@@ -40,6 +40,20 @@
         .project-name {
             margin-left: 8px;
         }
+
+        .grid-3 {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 8px;
+        }
+
+        .grid-3>* {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 8px 0;
+        }
     </style>
 
 </head>
@@ -56,20 +70,36 @@
         </div>
     </div>
     <div class="window-body">
-        <div class="load-section">
-            <button>Load Project</button>
-            <div class="project-name"> - No Project Loaded</div>
-        </div>
+        <div class="grid-3">
+            <div class="load-section">
+                <button>Load Project</button>
+                <div class="project-name"> - No Project Loaded</div>
+            </div>
 
+            <main>
+                <legend>Translate Text</legend>
+                <div class="field-row-stacked" style="width: 100%">
+                    <label for="text24">Original Text</label>
+                    <textarea id="text24" rows="3"></textarea>
+                </div>
+                <div class="field-row-stacked" style="width: 100%">
+                    <label for="text24">Translation</label>
+                    <textarea id="text24" rows="3"></textarea>
+                </div>
 
+            </main>
 
-        <div class="field-row-stacked" style="width: 200px">
-            <label for="text24">Original Text</label>
-            <textarea id="text24" rows="3"></textarea>
-        </div>
-        <div class="field-row-stacked" style="width: 200px">
-            <label for="text24">Translation</label>
-            <textarea id="text24" rows="3"></textarea>
+            <div class="AI">
+                <div class="field-row">
+                    <label for="text21">DEEPL Key</label>
+                    <input id="text21" type="text" />
+                </div>
+                <div class="field-row">
+                    <input checked type="checkbox" id="example2">
+                    <label for="example2">Enable AI Suggestion</label>
+                </div>
+            </div>
+
         </div>
 
         <fieldset>
