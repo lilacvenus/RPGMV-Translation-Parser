@@ -103,7 +103,7 @@
                 <div class="field-row-stacked" style="width: 100%">
                     <div class="textbox-row">
                         <label for="text24">Original Text</label>
-                        <button>Copy</button>
+                        <button id="copy-button">Copy</button>
                     </div>
                     <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
                 </div>
@@ -111,14 +111,14 @@
                 <div class="field-row-stacked" style="width: 100%">
                     <div class="textbox-row">
                         <label for="text24">Translation</label>
-                        <button>Copy</button>
+                        <button id="copy-button-trans">Copy</button>
                     </div>
                     <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
                 </div>
 
                 <div class="button-row">
-                    <button>Previous</button>
-                    <button>Next</button>
+                    <button id="previous-button">Previous</button>
+                    <button id="next-button">Next</button>
                 </div>
             </fieldset>
 
@@ -135,7 +135,7 @@
                         <input id="text21" type="text" />
                     </div>
                     <div class="field-row" style="margin-top: 16px;">
-                        <input checked type="checkbox" id="example2">
+                        <input type="checkbox" id="autofill-checkbox">
                         <label for="example2">Enable AI Suggestion</label>
                     </div>
                     <div class="field-row-stacked" style="margin-top: 16px;">
@@ -153,13 +153,14 @@
 
         <fieldset>
             <legend>Generate Files</legend>
-            <button>Overtranslated</button>
-            <button>Undertranslated</button>
-            <button>Translations</button>
-            <button>Not Translated</button>
+            <button id="generate-overtranslated">Overtranslated</button>
+            <button id="generate-undertranslated">Undertranslated</button>
+            <button id="generate-translations">Translations</button>
+            <button id="generate-nottranslated">Not Translated</button>
         </fieldset>
     </div>
 
+    <script src="dist/renderer.js" defer></script>
 </body>
 
 </html>
