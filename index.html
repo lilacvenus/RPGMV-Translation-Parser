@@ -55,6 +55,21 @@
         .grid-3> :last-child {
             align-items: flex-start;
         }
+
+        .button-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .textbox-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -86,12 +101,24 @@
                 <legend>Translate Text</legend>
 
                 <div class="field-row-stacked" style="width: 100%">
-                    <label for="text24">Original Text</label>
-                    <textarea id="text24" rows="3" style="border: 1px solid lightgray;"></textarea>
+                    <div class="textbox-row">
+                        <label for="text24">Original Text</label>
+                        <button>Copy</button>
+                    </div>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
                 </div>
+
                 <div class="field-row-stacked" style="width: 100%">
-                    <label for="text24">Translation</label>
-                    <textarea id="text24" rows="3" style="border: 1px solid lightgray;"></textarea>
+                    <div class="textbox-row">
+                        <label for="text24">Translation</label>
+                        <button>Copy</button>
+                    </div>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
+                </div>
+
+                <div class="button-row">
+                    <button>Previous</button>
+                    <button>Next</button>
                 </div>
             </fieldset>
 
@@ -118,7 +145,7 @@
                             <!-- Make API request to get all available languages -->
                         </select>
                     </div>
-                    
+
                 </div>
             </fieldset>
 
