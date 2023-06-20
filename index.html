@@ -33,29 +33,6 @@
             background-color: #efeddf;
         }
 
-        .project-name {
-            margin-left: 8px;
-        }
-
-        .grid-3 {
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 8px;
-        }
-
-        .grid-3>* {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 8px 8px;
-        }
-
-        .grid-3> :first-child,
-        .grid-3> :last-child {
-            align-items: flex-start;
-        }
-
         .button-row {
             display: flex;
             flex-direction: row;
@@ -75,8 +52,41 @@
             margin-bottom: -6px;
         }
 
-        #myTablist button[aria-selected="true"] {
-            margin-bottom: -6px;
+        .window-body {
+            display: flex;
+        }
+
+        .project-section,
+        .translate-section,
+        .setting-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .project-section {
+            margin-left: 0;
+            margin-right: 4px;
+        }
+
+        .translate-section {
+            margin-left: 4px;
+            margin-right: 4px;
+        }
+
+        .setting-section {
+            margin-left: 4px;
+            margin-right: 0;
+        }
+
+        .project-section fieldset {
+            flex: 1;
+        }
+
+        .translate-section fieldset,
+        .setting-section fieldset {
+            flex: 1;
         }
     </style>
 
@@ -94,7 +104,7 @@
         </div>
     </div>
     <div class="window-body">
-        <div class="grid-3">
+        <div class="project-section">
             <fieldset>
                 <legend>Project</legend>
 
@@ -104,43 +114,52 @@
                 </div>
             </fieldset>
 
-            <div class="translate-section">
-                <menu id="myTablist" role="tablist" style="margin-left: auto;">
-                    <button aria-selected="true">Messages</button>
-                    <button>Commands</button>
-                    <button>Terms</button>
-                    <button>Custom</button>
-                </menu>
+            <fieldset>
+                <legend>Generate Files</legend>
+                <button id="generate-overtranslated">Overtranslated</button>
+                <button id="generate-undertranslated">Undertranslated</button>
+                <button id="generate-translations">Translations</button>
+                <button id="generate-nottranslated">Not Translated</button>
+            </fieldset>
+        </div>
 
-                <fieldset style="width: 100%">
-                    <legend>Translate Text</legend>
-
-                    <div class="field-row-stacked">
-                        <div class="textbox-row">
-                            <label for="text24">Original Text</label>
-                            <button id="copy-button">Copy</button>
-                        </div>
-                        <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
-                    </div>
-
-                    <div class="field-row-stacked">
-                        <div class="textbox-row">
-                            <label for="text24">Translation</label>
-                            <button id="copy-button-trans">Copy</button>
-                        </div>
-                        <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
-                    </div>
-
-                    <div class="button-row">
-                        <button id="previous-button">Previous</button>
-                        <button id="next-button">Next</button>
-                    </div>
-                </fieldset>
-            </div>
-
+        <div class="translate-section">
+            <menu id="myTablist" role="tablist" style="margin-left: auto;">
+                <button aria-selected="true">Messages</button>
+                <button>Commands</button>
+                <button>Terms</button>
+                <button>Custom</button>
+            </menu>
 
             <fieldset>
-                <legend>Tools / Settings</legend>
+                <legend>Translate Text</legend>
+
+                <div class="field-row-stacked">
+                    <div class="textbox-row">
+                        <label for="text24">Original Text</label>
+                        <button id="copy-button">Copy</button>
+                    </div>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
+                </div>
+
+                <div class="field-row-stacked">
+                    <div class="textbox-row">
+                        <label for="text24">Translation</label>
+                        <button id="copy-button-trans">Copy</button>
+                    </div>
+                    <textarea id="text24" rows="3" style="border: 1px solid lightgray; resize: none;"></textarea>
+                </div>
+
+                <div class="button-row">
+                    <button id="previous-button">Previous</button>
+                    <button id="next-button">Next</button>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="setting-section">
+            <fieldset>
+                <legend>Settings</legend>
 
                 <div class="AI">
                     <div class="field-row">
@@ -165,16 +184,7 @@
 
                 </div>
             </fieldset>
-
         </div>
-
-        <fieldset>
-            <legend>Generate Files</legend>
-            <button id="generate-overtranslated">Overtranslated</button>
-            <button id="generate-undertranslated">Undertranslated</button>
-            <button id="generate-translations">Translations</button>
-            <button id="generate-nottranslated">Not Translated</button>
-        </fieldset>
     </div>
 
     <script src="dist/renderer.js" defer></script>
