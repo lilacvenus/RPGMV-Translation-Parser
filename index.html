@@ -88,6 +88,16 @@
         .setting-section fieldset {
             flex: 1;
         }
+
+        .hori-grid {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .project-icon {
+            border: 2px solid lightgray;
+        }
     </style>
 
 </head>
@@ -108,10 +118,15 @@
             <fieldset>
                 <legend>Project</legend>
 
-                <div class="load-section">
-                    <button>Load Project</button>
-                    <div class="project-name"> - No Project Loaded</div>
+                <div class="hori-grid">
+                    <div class="load-section">
+                        <button>Load Project</button>
+                        <div class="project-name"> - No Project Loaded</div>
+                    </div>
+
+                    <img src="media/icon.png" class="project-icon">
                 </div>
+
             </fieldset>
 
             <fieldset>
