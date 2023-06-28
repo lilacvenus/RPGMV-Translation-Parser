@@ -20,13 +20,9 @@ let keys: any = [];
 let currentIndex = 0;
 const currentLanguage = "Français";
 
-document.getElementById('copy-button')?.addEventListener('click', function () {
-    navigator.clipboard.writeText(originalTextElement?.value);
-});
-
-document.getElementById('copy-button-trans')?.addEventListener('click', function () {
-    navigator.clipboard.writeText(userTextElement?.value);
-});
+// Copies text to clipboard
+document.getElementById('copy-button')?.addEventListener('click', function () { navigator.clipboard.writeText(originalTextElement?.value) });
+document.getElementById('copy-button-trans')?.addEventListener('click', function () { navigator.clipboard.writeText(userTextElement?.value); });
 
 function loadFile() {
     ipcRenderer.send('load-file', 'ping');
@@ -64,25 +60,23 @@ function saveData() {
     data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
 
-let currentCategory : string;
+let currentCategory: string;
 
 function switchCategory(category: string) {
     if (currentCategory !== category) {
         currentCategory = category;
+        console.log(data); // We have all the data at this point
         // TODO: Update keys and currentIndex
-        updateActiveButton();
+
+        // Update the active button
+        const categoryButtons = document.querySelectorAll('.button-category');
+
+        categoryButtons.forEach(button => {
+            const isActive = button.id === `category-${currentCategory}`;
+            button.classList.toggle('active', isActive);
+        });
     }
 }
-
-function updateActiveButton() {
-    const categoryButtons = document.querySelectorAll('.button-category');
-
-    categoryButtons.forEach(button => {
-        const isActive = button.id === `category-${currentCategory}`;
-        button.classList.toggle('active', isActive);
-    });
-}
-
 
 function handleClick(isPrevious: boolean) {
     saveData();
