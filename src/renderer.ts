@@ -29,7 +29,7 @@ function loadFile() {
 }
 
 ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
-    console.log("Render received game title: " + arg);
+    // console.log("Render received game title: " + arg);
     const gameTitleElement = document.getElementById('game-title');
     if (gameTitleElement) {
         gameTitleElement.innerText = arg;
@@ -37,7 +37,7 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
 });
 
 ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
-    console.log("Render received translation data: " + JSON.stringify(arg));
+    // console.log("Render received translation data: " + JSON.stringify(arg));
     data = arg;
     keys = Object.keys(data.msg);
     currentIndex = 0;
@@ -47,10 +47,11 @@ ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
 function updateTextFields(index: number) {
     let originalText = keys[index];
     let transText = data.msg[originalText][currentLanguage];
+
     originalTextElement.value = originalText;
 
     if (isAutofillChecked && transText === "") {
-        userTextElement.value = originalText.toUpperCase();
+        userTextElement.value = originalText.toUpperCase(); //change to API call
     } else {
         userTextElement.value = transText;
     }
