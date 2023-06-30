@@ -54,8 +54,8 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                 }
 
                 let translatedData = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));
-                event.reply('load-file-translation-reply', translatedData);
-                fs.writeFileSync(`${globalThis.project_path}/data/Translations2.json`, JSON.stringify(translatedData), 'utf8');
+                const normalizedData = normalizeKeys(translatedData);
+                event.reply('load-file-translation-reply', normalizedData);
             }
         })
         .catch((err: Error) => {
@@ -66,3 +66,21 @@ ipcMain.on('load-file', (event: any, arg: any) => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
+
+// Normalize all keys in the JSON from Translations.JSON so languages with accents don't return undefined
+function normalizeKeys(obj: any): any {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj; // Base case: return non-object values as is
+    }
+
+    const normalizedObj: any = Array.isArray(obj) ? [] : {}; // Create a new object or array
+
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const normalizedKey = key.normalize('NFC');
+            normalizedObj[normalizedKey] = normalizeKeys(obj[key]); // Recursively normalize nested objects
+        }
+    }
+
+    return normalizedObj;
+}
