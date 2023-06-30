@@ -17,8 +17,10 @@ let data = {
 
 let isAutofillChecked = autofillCheckbox?.checked;
 let keys: any = [];
-let currentIndex = 0;
-const currentLanguage = "Français";
+let currentIndex : number = 0;
+let currentLanguage : string = "Français";
+let currentCategory : string = "msg";
+
 
 // Copies text to clipboard
 document.getElementById('copy-button')?.addEventListener('click', function () { navigator.clipboard.writeText(originalTextElement?.value) });
@@ -50,23 +52,17 @@ function updateTextFields(index: number) {
 
     originalTextElement.value = originalText;
 
-    if (isAutofillChecked && transText === "") {
-        userTextElement.value = originalText.toUpperCase(); //change to API call
-    } else {
-        userTextElement.value = transText;
-    }
+    // If autofill is on and no translation exists, make it uppercase (for now)
+    userTextElement.value = isAutofillChecked && transText === "" ? originalText.toUpperCase() : transText;
 }
 
 function saveData() {
     data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
 
-let currentCategory: string;
-
 function switchCategory(category: string) {
     if (currentCategory !== category) {
         currentCategory = category;
-        console.log(data); // We have all the data at this point
         // TODO: Update keys and currentIndex
 
         // Update the active button
