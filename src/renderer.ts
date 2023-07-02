@@ -57,7 +57,7 @@ function updateTextFields(index: number) {
 }
 
 function saveData() {
-    data.msg[keys[currentIndex]][currentLanguage] = userTextElement.value;
+    data[currentCategory][keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
 
 function switchCategory(category: string) {
