@@ -41,14 +41,14 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
 ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
     // console.log("Render received translation data: " + JSON.stringify(arg));
     data = arg;
-    keys = Object.keys(data.msg);
+    keys = Object.keys(data[currentCategory]);
     currentIndex = 0;
     updateTextFields(currentIndex);
 });
 
 function updateTextFields(index: number) {
     let originalText = keys[index];
-    let transText = data.msg[originalText][currentLanguage];
+    let transText = data[currentCategory][originalText][currentLanguage];
 
     originalTextElement.value = originalText;
 
@@ -63,7 +63,9 @@ function saveData() {
 function switchCategory(category: string) {
     if (currentCategory !== category) {
         currentCategory = category;
-        // TODO: Update keys and currentIndex
+        keys = Object.keys(data[currentCategory]);
+        currentIndex = 0;
+        updateTextFields(currentIndex);
 
         // Update the active button
         const categoryButtons = document.querySelectorAll('.button-category');

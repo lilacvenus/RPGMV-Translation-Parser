@@ -142,10 +142,10 @@
 
         <div class="translate-section">
             <menu id="myTablist" role="tablist" style="margin-left: auto;">
-                <button aria-selected="true">Messages</button>
-                <button>Commands</button>
-                <button>Terms</button>
-                <button>Custom</button>
+                <button aria-selected="true" onclick="switchCategory('msg')">Messages</button>
+                <button onclick="switchCategory('cmd')">Commands</button>
+                <button onclick="switchCategory('terms')">Terms</button>
+                <button onclick="switchCategory('custom')">Custom</button>
             </menu>
 
             <fieldset>
