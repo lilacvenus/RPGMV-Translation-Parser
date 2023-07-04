@@ -31,7 +31,6 @@ function loadFile() {
 }
 
 ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
-    // console.log("Render received game title: " + arg);
     const gameTitleElement = document.getElementById('game-title');
     if (gameTitleElement) {
         gameTitleElement.innerText = arg;
@@ -39,11 +38,7 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
 });
 
 ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
-    // console.log("Render received translation data: " + JSON.stringify(arg));
     data = arg;
-    keys = Object.keys(data[currentCategory]);
-    currentIndex = 0;
-    updateTextFields(currentIndex);
 });
 
 function updateTextFields(index: number) {
@@ -57,15 +52,14 @@ function updateTextFields(index: number) {
 }
 
 function saveData() {
+    // TODO: Make this fit for all categories
     data[currentCategory][keys[currentIndex]][currentLanguage] = userTextElement.value;
 }
 
 function switchCategory(category: string) {
     if (currentCategory !== category) {
         currentCategory = category;
-        keys = Object.keys(data[currentCategory]);
-        currentIndex = 0;
-        updateTextFields(currentIndex);
+        setCategory(currentCategory);
 
         // Update the active button
         const categoryButtons = document.querySelectorAll('.button-category');
@@ -87,6 +81,14 @@ function handleClick(isPrevious: boolean) {
     }
 
     updateTextFields(currentIndex);
+}
+
+function setCategory(category: string) {
+    // TODO : Make this fit for all categories
+    // TODO : Make this not error out when there's no data in a category
+    keys = Object.keys(data[currentCategory]);  // Update keys
+    currentIndex = 0;                           // Reset index
+    updateTextFields(currentIndex);             // Update visual text fields
 }
 
 previousButton?.addEventListener('click', function () {
