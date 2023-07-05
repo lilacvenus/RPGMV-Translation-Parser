@@ -48,12 +48,17 @@ function updateTextFields(index: number) {
     originalTextElement.value = originalText;
 
     // If autofill is on and no translation exists, make it uppercase (for now)
+    // TODO: Change this to use local AI or AI API
     userTextElement.value = isAutofillChecked && transText === "" ? originalText.toUpperCase() : transText;
 }
 
 function saveData() {
-    // TODO: Make this fit for all categories
-    data[currentCategory][keys[currentIndex]][currentLanguage] = userTextElement.value;
+    if (currentCategory === "custom") {
+        data[currentLanguage][keys[currentIndex]] = userTextElement.value;
+    }
+    else { // msg, cmd, terms
+        data[currentCategory][keys[currentIndex]][currentLanguage] = userTextElement.value;
+    }
 }
 
 function switchCategory(category: string) {
