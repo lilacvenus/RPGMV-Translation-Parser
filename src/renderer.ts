@@ -89,9 +89,14 @@ function handleClick(isPrevious: boolean) {
 }
 
 function setCategory(category: string) {
-    // TODO : Make this fit for all categories
     // TODO : Make this not error out when there's no data in a category
-    keys = Object.keys(data[currentCategory]);  // Update keys
+    // TODO : Fix whatever is causing the error when switching to custom even though the keys are correct
+    if (currentCategory === "custom") {
+        keys = Object.keys(data["custom"][currentLanguage]);  // Update keys
+    }
+    else {
+        keys = Object.keys(data[currentCategory]);  // Update keys
+    }
     currentIndex = 0;                           // Reset index
     updateTextFields(currentIndex);             // Update visual text fields
 }
