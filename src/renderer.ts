@@ -17,9 +17,9 @@ let data = {
 
 let isAutofillChecked = autofillCheckbox?.checked;
 let keys: any = [];
-let currentIndex : number = 0;
-let currentLanguage : string = "Français";
-let currentCategory : string = "msg";
+let currentIndex: number = 0;
+let currentLanguage: string = "Français";
+let currentCategory: string = "msg";
 
 
 // Copies text to clipboard
@@ -43,7 +43,13 @@ ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
 
 function updateTextFields(index: number) {
     let originalText = keys[index];
-    let transText = data[currentCategory][originalText][currentLanguage];
+    let transText = "";
+    if (currentCategory === "custom") {
+        transText = data["custom"][currentLanguage][originalText];
+    }
+    else {
+        transText = data[currentCategory][originalText][currentLanguage];
+    }
 
     originalTextElement.value = originalText;
 
