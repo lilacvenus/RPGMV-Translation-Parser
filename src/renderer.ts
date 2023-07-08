@@ -8,7 +8,13 @@ const previousButton = document.getElementById('previous-button');
 const nextButton = document.getElementById('next-button');
 const loadButton = document.getElementById('load-button');
 
-let data = {
+interface TheWarningRemover {
+    [category: string]: {
+      [text: string]: any;
+    };
+  }
+
+let data : TheWarningRemover = {
     msg: {},
     cmd: {},
     terms: {},
@@ -96,7 +102,6 @@ function handleClick(isPrevious: boolean) {
 
 function setCategory(category: string) {
     // TODO : Make this not error out when there's no data in a category
-    // TODO : Fix whatever is causing the error when switching to custom even though the keys are correct
     if (currentCategory === "custom") {
         keys = Object.keys(data["custom"][currentLanguage]);  // Update keys
     }
