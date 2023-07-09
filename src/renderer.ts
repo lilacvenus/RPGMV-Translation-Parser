@@ -37,7 +37,7 @@ function loadFile() {
 }
 
 ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
-    const gameTitleElement = document.getElementById('game-title');
+    const gameTitleElement = document.getElementById('project-name');
     if (gameTitleElement) {
         gameTitleElement.innerText = arg;
     }
