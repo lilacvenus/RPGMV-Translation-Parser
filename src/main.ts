@@ -44,6 +44,18 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                 globalThis.project_path = result.filePaths[0];
                 event.reply('load-file-reply', globalThis.project_path);
 
+                // Get game icon
+                const iconPath = path.join(globalThis.project_path, 'icon/icon.png');
+                fs.readFile(iconPath, (error, data) => {
+                    if (error) {
+                        event.reply('game-icon-reply', null);
+                        console.log(`Error loading game icon: ${error}`);
+                    } else {
+                        event.reply('game-icon-reply', data.toString('base64'));
+                    }
+                });
+
+                // Get game title
                 try {
                     const gameInfo = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/System.json`, 'utf-8'));
                     event.reply('game-title-reply', gameInfo.gameTitle);
@@ -53,6 +65,7 @@ ipcMain.on('load-file', (event: any, arg: any) => {
                     console.log(`Error loading game title: ${error}`);
                 }
 
+                // Get translations
                 let translatedData = JSON.parse(fs.readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));
                 const normalizedData = normalizeKeys(translatedData);
                 event.reply('load-file-translation-reply', normalizedData);

@@ -10,11 +10,11 @@ const loadButton = document.getElementById('load-button');
 
 interface TheWarningRemover {
     [category: string]: {
-      [text: string]: any;
+        [text: string]: any;
     };
-  }
+}
 
-let data : TheWarningRemover = {
+let data: TheWarningRemover = {
     msg: {},
     cmd: {},
     terms: {},
@@ -40,6 +40,15 @@ ipcRenderer.on('game-title-reply', (event: any, arg: any) => {
     const gameTitleElement = document.getElementById('project-name');
     if (gameTitleElement) {
         gameTitleElement.innerText = arg;
+    }
+});
+
+ipcRenderer.on('game-icon-reply', (event, arg) => {
+    if (arg === null) {
+        console.log('Game icon not found.');
+    } else {
+        const gameIconElement = document.getElementById('project-icon');
+        gameIconElement.src = `data:image/png;base64,${arg}`;
     }
 });
 
