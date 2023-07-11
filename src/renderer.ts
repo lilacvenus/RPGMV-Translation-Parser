@@ -1,3 +1,4 @@
+// TODO: Fix blank translation file as it's missing some of the opening dialogue, and some of the text seems to have excess escape characters
 const { ipcRenderer } = require('electron');
 
 const originalTextElement = document.getElementById('original-text') as HTMLInputElement;
@@ -60,10 +61,15 @@ function updateTextFields(index: number) {
     let originalText = keys[index];
     let transText = "";
     if (currentCategory === "custom") {
-        transText = data["custom"][currentLanguage][originalText];
+        let currentString: string = data["custom"][currentLanguage][originalText];
+        transText = currentString;
     }
     else {
-        transText = data[currentCategory][originalText][currentLanguage];
+        let currentString: string = data[currentCategory][originalText][currentLanguage];
+        let splitString = splitDialogue(currentString);
+        // TODO : Get imports working for organization and make this display properly so there's less misc. text
+        console.log(splitString);
+        transText = currentString;
     }
 
     originalTextElement.value = originalText;
@@ -110,13 +116,8 @@ function handleClick(isPrevious: boolean) {
 }
 
 function setCategory(category: string) {
-    // TODO : Make this not error out when there's no data in a category
-    if (currentCategory === "custom") {
-        keys = Object.keys(data["custom"][currentLanguage]);  // Update keys
-    }
-    else {
-        keys = Object.keys(data[currentCategory]);  // Update keys
-    }
+    // TODO : Make this not error out when there's no data in a category (keys is an empty array)
+    keys = currentCategory === "custom" ? Object.keys(data["custom"][currentLanguage]) : Object.keys(data[currentCategory]);
     currentIndex = 0;                           // Reset index
     updateTextFields(currentIndex);             // Update visual text fields
 }
@@ -137,3 +138,43 @@ autofillCheckbox.addEventListener('change', function () {
 loadButton?.addEventListener('click', function () {
     loadFile();
 });
+
+function splitDialogue(step0: string): string[] {
+    const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
+    const step2 = step1.flatMap(item => item.split(/\\n/));                         // Split on "\n"
+    const step3 = step2.flatMap(item => item.split(/(\\>)/));                       // Split on "\\>"
+    const step4 = step3.flatMap(item => item.split("\\."));                         // Split on "\\."
+    const step5 = step4.flatMap(item => item.split(/(\\fb)/));                      // Split on "\\fb"
+    const step6 = step5.flatMap(item => item.split(/(\\\|)/));                      // Split on "\\|"
+    const step7 = step6.flatMap(item => item.split(/(\\\^)/));                      // Split on "\\^"
+    const step8 = step7.flatMap(item => item.split(/(\\lson)/));                    // Split on "\\lson"
+    const step9 = step8.flatMap(item => item.split(/(\\lsoff)/));                   // Split on "\\lsoff"
+    const step10 = step9.flatMap(item => item.split(/(\\ntc<[^>]+>)/));             // Split on "\\ntc<Construction Worker>"
+    const step11 = step10.flatMap(item => item.split(/(\\fn<[^>]+>)/));             // Split on "\\fn<Gabriola>"
+    const step12 = step11.flatMap(item => item.split(/(\\TA\[\d+\])/));             // Split on "\\TA[1]"
+    const step13 = step12.flatMap(item => item.split(/(\\m\[[^\]]+\])/));           // Split on "\\m[Cerio]"
+    const step14 = step13.flatMap(item => item.split(/(\\msgposy\[\d+\])/));        // Split on "\\msgposy[455]"
+    const step15 = step14.flatMap(item => item.split(/(\\autoevent\[\d+\])/));      // Split on "\\autoevent[1]"
+    const step16 = step15.flatMap(item => item.split(/(\\msgwidth\[[^\]]+\])/));    // Split on "\\msgwidth[auto]"
+
+    const step17 = step16.flatMap(item => {                                        // Split on leading/trailing spaces
+        const trimmedItem = item.trim();
+        const leadingSpaces = (item.match(/^\s*/) ?? [""])[0];
+        const trailingSpaces = (item.match(/\s*$/) ?? [""])[0];
+
+        const result = [];
+        if (leadingSpaces.length > 0) {
+            result.push(leadingSpaces);
+        }
+        if (trimmedItem.length > 0) {
+            result.push(trimmedItem);
+        }
+        if (trailingSpaces.length > 0) {
+            result.push(trailingSpaces);
+        }
+
+        return result;
+    });
+
+    return step17.filter(item => item.length > 0);
+}
