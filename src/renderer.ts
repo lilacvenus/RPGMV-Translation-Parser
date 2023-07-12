@@ -59,20 +59,39 @@ ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
 
 function updateTextFields(index: number) {
     let originalText = keys[index];
+    let splitText = splitDialogue(originalText);
+
     let transText = "";
     if (currentCategory === "custom") {
-        let currentString: string = data["custom"][currentLanguage][originalText];
-        transText = currentString;
-    }
-    else {
-        let currentString: string = data[currentCategory][originalText][currentLanguage];
-        let splitString = splitDialogue(currentString);
-        // TODO : Get imports working for organization and make this display properly so there's less misc. text
-        console.log(splitString);
-        transText = currentString;
+        transText = data["custom"][currentLanguage][originalText];
+    } else {
+        transText = data[currentCategory][originalText][currentLanguage];
     }
 
-    originalTextElement.value = originalText;
+    // Filter and process splitText
+    let modifiedSplitText = [];
+    let escapeNext = false;
+
+    for (const element of splitText) {
+        if (escapeNext) {
+            modifiedSplitText.push(element);
+            escapeNext = false;
+        } else if (element.startsWith('\\') && element !== '\\n') {
+            escapeNext = true;
+        } else {
+            modifiedSplitText.push(element);
+        }
+    }
+
+    console.log(modifiedSplitText);
+
+    // Create the resulting string
+    let finalText = modifiedSplitText.join('');
+
+    originalTextElement.value = finalText;
+
+
+
 
     // If autofill is on and no translation exists, make it uppercase (for now)
     // TODO: Change this to use local AI or AI API
