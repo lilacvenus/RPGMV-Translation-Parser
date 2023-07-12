@@ -1,4 +1,5 @@
 // TODO: Fix blank translation file as it's missing some of the opening dialogue, and some of the text seems to have excess escape characters
+// TODO: Make the message category automatically load data on project load so the user doesn't need to flip back and forth between categories
 const { ipcRenderer } = require('electron');
 
 const originalTextElement = document.getElementById('original-text') as HTMLInputElement;
@@ -157,6 +158,7 @@ autofillCheckbox.addEventListener('change', function () {
 loadButton?.addEventListener('click', function () {
     loadFile();
 });
+
 
 function splitDialogue(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
