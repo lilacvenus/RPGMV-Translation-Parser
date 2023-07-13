@@ -58,20 +58,13 @@ ipcRenderer.on('load-file-translation-reply', (event: any, arg: any) => {
     data = arg;
 });
 
-function updateTextFields(index: number) {
-    let originalText = keys[index];
-    let splitText = splitDialogue(originalText);
+function splitEscapeCharacters(originalText: string): string {
 
-    let transText = "";
-    if (currentCategory === "custom") {
-        transText = data["custom"][currentLanguage][originalText];
-    } else {
-        transText = data[currentCategory][originalText][currentLanguage];
-    }
-
-    // Filter and process splitText
-    let modifiedSplitText = [];
-    let escapeNext = false;
+    let modifiedSplitText: string[] = [];
+    let escapeNext: boolean = false;
+    let splitText: string[] = splitDialogue(originalText);
+    
+    console.log(splitText);
 
     for (const element of splitText) {
         if (escapeNext) {
@@ -86,17 +79,30 @@ function updateTextFields(index: number) {
 
     console.log(modifiedSplitText);
 
-    // Create the resulting string
-    let finalText = modifiedSplitText.join('');
+    let finalText: string = modifiedSplitText.join('');
+    return finalText;
+}
 
-    originalTextElement.value = finalText;
+function updateTextFields(index: number) {
+    let originalText = keys[index];
 
+    let transText = "";
+    if (currentCategory === "custom") {
+        transText = data["custom"][currentLanguage][originalText];
+    } else {
+        transText = data[currentCategory][originalText][currentLanguage];
+    }
 
+    if (isAutofillChecked && transText === "") {
+        // If autofill is on and no translation exists, make it uppercase (for now)
+        // TODO: Change this to use local AI or AI API
+        transText = originalText.toUpperCase();
+    }
 
+    // // ↓ SET TEXTBOX VALUES ↓ // //
 
-    // If autofill is on and no translation exists, make it uppercase (for now)
-    // TODO: Change this to use local AI or AI API
-    userTextElement.value = isAutofillChecked && transText === "" ? originalText.toUpperCase() : transText;
+    originalTextElement.value = splitEscapeCharacters(originalText);
+    userTextElement.value = transText;
 }
 
 function saveData() {
@@ -159,7 +165,7 @@ loadButton?.addEventListener('click', function () {
     loadFile();
 });
 
-
+// TODO : Make this split properly all the time, an example problem string is: "\\autoevent[6]\\m[Avis]Weren't you supposed to be getting up nice and early\nto help Cerio with the festival stuff tomorrow?"
 function splitDialogue(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split(/\\n/));                         // Split on "\n"
