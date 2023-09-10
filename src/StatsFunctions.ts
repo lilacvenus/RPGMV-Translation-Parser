@@ -1,17 +1,19 @@
-const { ScrapeAll } = require('./ScrapeFunctions.js');
-const { TranslateAll } = require('./TranslateFunctions.js');
-const { readFileSync } = require('fs');
+import { ScrapeAll } from './ScrapeFunctions';
+import { TranslateAll } from './TranslateFunctions';
+import { readFileSync} from 'fs';
+const output_folder: string = "./output/";
 
-const project_path = "C:\Users\Venus\Desktop\Caketropolis"
-const current_language = "Français"
+// TODO: Make it so the under/over translation functions can update Translations.json without overwriting existing data
 
-// Locates missing or excess translations and outputs them to a file for review by comparing 
-// the current JSON file with what a brand new one would look like.    
-const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') => {
-    const languages = typeof language === 'string' ? [language] : language;
-    const scraped_data = ScrapeAll();
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Locates missing or excess translations and outputs them to a file for review     //
+// Input: Path to map000 files, array of all MAP000.json files, array of languages  //
+// Output: A JSON object containing missing/excess translations based on mode       //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+export const GeneralTranslated = (folder_path: string, matching_files: string[], languages: string[], mode: 'under' | 'over') => {
+    const scraped_data = ScrapeAll(folder_path, matching_files);
     const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
     const output_JSON: Record<string, any> = {};
 
     const categories = ["msg", "cmd", "terms", "custom"];
@@ -36,24 +38,28 @@ const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') 
         }
 
         else {
-            for (const key of Object.keys(compare_JSON)) {
-                if (typeof target_JSON[key] === 'undefined') {
+            for (const key in target_JSON) {
+                if (typeof compare_JSON[key] === 'undefined') {
                     output_JSON[category] = output_JSON[category] || {};
-                    output_JSON[category][key] = compare_JSON[key];
+                    output_JSON[category][key] = target_JSON[key];
                 }
             }
         }
-    }
+    };
 
     return output_JSON;
 
 };
 
 
-// Returns JSON for all translations that didn't have a translation (are still an empty string)
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+// Filters out translated objects from Translations.json in the output folder       //
+// Input: None                                                                      //
+// Output: A JSON object containing untranslated objects                            //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export const NotTranslated = () => {
     // Get the JSON that's already been translated
-    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(output_folder + 'Translations.json', 'utf8'));
 
     // Iterate over the categories: "msg", "cmd", "terms", "custom"
     const categories = ["msg", "cmd", "terms", "custom"];
@@ -68,7 +74,7 @@ export const NotTranslated = () => {
                 for (const item in languageObj) {
                     const translation = languageObj[item];
 
-                    if (translation !== '') {
+                    if (item != translation) {
                         delete languageObj[item];
                     }
                 }
@@ -87,7 +93,7 @@ export const NotTranslated = () => {
                 for (const lang in translationsObj) {
                     const value = translationsObj[lang];
 
-                    if (value !== '') {
+                    if (value !== key) {
                         delete translationsObj[lang];
                     }
                 }
@@ -108,10 +114,10 @@ export const NotTranslated = () => {
 //               Wrapper functions for the GeneralTranslated function               //
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
-export const OverTranslated = () => {
-    return GeneralTranslated(current_language, 'over');
+export const OverTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+    return GeneralTranslated(folder_path, matching_files, languages, 'over');
 };
 
-export const UnderTranslated = () => {
-    return GeneralTranslated(current_language, 'under');
+export const UnderTranslated = (folder_path: string, matching_files: string[], languages: string[]) => {
+    return GeneralTranslated(folder_path, matching_files, languages, 'under');
 };

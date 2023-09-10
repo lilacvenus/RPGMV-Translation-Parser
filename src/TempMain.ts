@@ -11,11 +11,6 @@ const matching_files = readdirSync(mapfile_folder).filter(file => file.match(/^M
 const validDisassemble = IsDisassembleValid(mapfile_folder, matching_files, languages);
 console.log(validDisassemble);
 
-
-
-
-
-
 // let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
 // let output_JSON = Translate(languages, scraped_data, "msg");
 
@@ -28,3 +23,5 @@ console.log(validDisassemble);
 //                 }
 //         }
 // });
+
+// NOTE: This is the older versions of all the files and still need to be tested, checked for any missing refactors, and updated with the new features from the newer versions

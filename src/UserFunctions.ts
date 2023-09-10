@@ -1,11 +1,15 @@
-const dotenv = require('dotenv');
-const { ScrapeMessages } = require('./ScrapeFunctions.js');
-const { Translate } = require('./TranslateFunctions.js');
+import dotnev from 'dotenv';
+import { ScrapeAll, ScrapeMessages } from './ScrapeFunctions.js';
+import { TranslateAll, Translate } from './TranslateFunctions.js';
 
-dotenv.config();
+dotnev.config();
 const API_KEY = process.env.API_KEY;
 
-//  Splits all escape characters + trailing/leading spaces into their own elements
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Splits all escape characters + trailing/leading spaces into their own elements  //
+//  Input: String of RPGMV dialogue                                                 //
+//  Output: Array of ever segment split into their own elements                     //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export function splitDialogue(step0: string): string[] {
     const step1 = step0.split(/(\\C\[\d+\])/);                                      // Split on "\\C[21]"
     const step2 = step1.flatMap(item => item.split(/\\n/));                         // Split on "\n"
@@ -46,8 +50,11 @@ export function splitDialogue(step0: string): string[] {
     return step17.filter(item => item.length > 0);
 }
 
-
-//  Uses DeepL API to translate a string
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Uses DeepL API to translate a string                                            //
+//  Input: String to be translated and the target language code                     //
+//  Output: Translated string                                                       //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 export async function translateAPI(text: string, target_lang: string): Promise<string> {
     const encoded_text = `text=${encodeURIComponent(text)}&target_lang=${encodeURIComponent(target_lang)}`;
 
@@ -70,12 +77,15 @@ export async function translateAPI(text: string, target_lang: string): Promise<s
 
 }
 
-
-//  Runs through every single dialogue in the msg category and sees if splitting
-//  and reassembling returns the exact same result
-export function IsDisassembleValid(language: string | string[]): boolean {
-    const languages = typeof language === 'string' ? [language] : language;
-    let output_JSON = Translate(languages, ScrapeMessages(), "msg");
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+//  Runs through every single dialogue in the msg category and sees if splitting    //
+//  and reassembling returns the exact same result                                  //
+//  Input: The folder of map files and the list of MAP000 files                     //
+//  Output: false if a string doesn't match, true if they all pass                  //
+// +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
+export function IsDisassembleValid(mapfile_folder : string, matching_files : string[], languages : string[]): boolean {
+    let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
+    let output_JSON = Translate(languages, scraped_data, "msg");
     let mismatchCount = 0;
     let nonmatchingStrings = [];
 
@@ -90,8 +100,14 @@ export function IsDisassembleValid(language: string | string[]): boolean {
 
     if (mismatchCount > 0) {
         console.log(`Disassembly/Reassembly failed. ${mismatchCount} strings did not match.`);
+        nonmatchingStrings.forEach((item) => {
+            console.log(`Original: ${item[0]}`);
+            console.log(`Original Length: ${item[0].length}`);
+            console.log(`Reassembled: ${item[1]}`);
+            console.log(`Reassembled Length: ${item[1].length}\n`);
+        });
         return false;
-    }
+    } 
     else {
         console.log("All string successfully passed.");
         return true;
