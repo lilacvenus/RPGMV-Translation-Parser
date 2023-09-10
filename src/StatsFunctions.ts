@@ -2,13 +2,16 @@ const { ScrapeAll } = require('./ScrapeFunctions.js');
 const { TranslateAll } = require('./TranslateFunctions.js');
 const { readFileSync } = require('fs');
 
+const project_path = "C:\Users\Venus\Desktop\Caketropolis"
+const current_language = "Français"
+
 // Locates missing or excess translations and outputs them to a file for review by comparing 
 // the current JSON file with what a brand new one would look like.    
 const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') => {
     const languages = typeof language === 'string' ? [language] : language;
     const scraped_data = ScrapeAll();
     const new_JSON = TranslateAll(languages, scraped_data);
-    const old_JSON = JSON.parse(readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
     const output_JSON: Record<string, any> = {};
 
     const categories = ["msg", "cmd", "terms", "custom"];
@@ -50,7 +53,7 @@ const GeneralTranslated = (language: string | string[], mode: 'under' | 'over') 
 // Returns JSON for all translations that didn't have a translation (are still an empty string)
 export const NotTranslated = () => {
     // Get the JSON that's already been translated
-    const old_JSON = JSON.parse(readFileSync(`${globalThis.project_path}/data/Translations.json`, 'utf8'));
+    const old_JSON = JSON.parse(readFileSync(`${project_path}/data/Translations.json`, 'utf8'));
 
     // Iterate over the categories: "msg", "cmd", "terms", "custom"
     const categories = ["msg", "cmd", "terms", "custom"];
@@ -106,9 +109,9 @@ export const NotTranslated = () => {
 // +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+//
 
 export const OverTranslated = () => {
-    return GeneralTranslated(globalThis.current_language, 'over');
+    return GeneralTranslated(current_language, 'over');
 };
 
 export const UnderTranslated = () => {
-    return GeneralTranslated(globalThis.current_language, 'under');
+    return GeneralTranslated(current_language, 'under');
 };
