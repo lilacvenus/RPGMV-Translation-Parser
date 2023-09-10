@@ -1,9 +1,3 @@
-// const ScrapeFunctions = require('./ScrapeFunctions.js');
-// const TranslateFunctions = require('./TranslateFunctions.js');
-// const { IsDisassembleValid } = require('./UserFunctions.js');
-// const { NotTranslated, OverTranslated, UnderTranslated } = require('./StatsFunctions.js');
-// const { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUnderTranslated } = require('./OutputFunctions.js');
-
 // Global variables
 var project_path: string;
 
