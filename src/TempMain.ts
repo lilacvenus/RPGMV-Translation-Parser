@@ -1,8 +1,30 @@
-const ScrapeFunctions = require('./ScrapeFunctions.js');
-const TranslateFunctions = require('./TranslateFunctions.js');
-const { IsDisassembleValid } = require('./UserFunctions.js');
-const { NotTranslated, OverTranslated, UnderTranslated } = require('./StatsFunctions.js');
-const { OutputNotTranslated, OutputOverTranslated, OutputTranslations, OutputUnderTranslated } = require('./OutputFunctions.js');
+import { OutputTranslations, OutputNotTranslated, OutputOverTranslated, OutputUnderTranslated } from './OutputFunctions';
+import { splitDialogue, translateAPI, IsDisassembleValid } from './UserFunctions.js';
+import { ScrapeMessages } from './ScrapeFunctions.js';
+import { Translate } from './TranslateFunctions.js';
+import { readdirSync } from 'fs';
 
-const project_path = "C:\Users\Venus\Desktop\Caketropolis"
-const current_language = "Français"
+const languages: string[] = ["Français"];
+const mapfile_folder: string = "./MapFiles/";
+const matching_files = readdirSync(mapfile_folder).filter(file => file.match(/^Map\d{3}\.json$/)); // Regex to match MAP000.json files
+
+const validDisassemble = IsDisassembleValid(mapfile_folder, matching_files, languages);
+console.log(validDisassemble);
+
+
+
+
+
+
+// let scraped_data = ScrapeMessages(mapfile_folder, matching_files);
+// let output_JSON = Translate(languages, scraped_data, "msg");
+
+// let array = splitDialogue(key);
+// array.forEach(async (element, index) => {
+//         if (element[0] !== "\\") {
+//                 if (element.length > 1) {
+//                         let coolVar = await translateAPI(element, "FR");
+//                         console.log(element, index);
+//                 }
+//         }
+// });
